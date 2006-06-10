@@ -1,0 +1,59 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8;">
+
+<title>WikipediaFS, un système de fichier pour Wikipédia</title><style>
+body { background-color: white; }
+h1, h2, h3 { font-family: sans; color: #000000; }
+</style></head>
+<body>
+
+<p><a href="index.htm" title="English version">English version</a></p>
+
+<h1>WikipediaFS</h1>
+
+<p>WikipediaFS est un système de fichier destiné à être utilisé sous Linux, et qui vous permet de manipuler les articles de <a href="http://www.wikipedia.org/">Wikipedia</a> comme s'ils étaient de véritables fichiers réellement présents sur votre disque dur.</p>
+
+<p>De ce fait, vous pouvez voir et modifier des articles dans votre éditeur de texte préféré, et bénéficier de ses avantages (rechercher & remplacer, coloration de la syntaxe wiki, macros...) ou encore utiliser le glisser/déposer sur des fichiers de votre ordinateur vers ou depuis Wikipédia.</p>
+
+<p>Bien que déjà utilisable, WikipediaFS n'est pas encore disponible sous forme d'archive classique. Si vous souhaitez tester la version actuelle, veuillez consulter la section « Téléchargement et installation » ci-après.</p>
+
+<p>WikipediaFS est un <a href="http://www.gnu.org/philosophy/free-sw.html">logiciel libre</a>, sous <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> et mis à disposition sans garantie aucune concernant son utilisation.</p>
+
+<h2>Fonctionnalités</h2>
+
+<ul>
+<li>Support de commandes usuelles Unix : cd, ls, cat, cp, mv, rm, <em>pipe</em> et redirections.</li>
+<li>Lire et modifier des articles Wikipédia.</li>
+<li>Testé avec succès sous les éditeurs de texte emacs, vi, kate, gedit et leaf.</li>
+<li>Fonctionne avec Fuse 2.2.1 et Fuse 1.3.</li>
+<li>Support d'une configuration utilisateur (durée du cache, sites utilisés).</li>
+<li>Authentification des utilisateurs enregistrés.</li>
+</ul>
+
+<h2>Téléchargement et installation</h2>
+
+<p>Il n'y a pour le moment pas de version stable de WikipediaFS à disposition.</p>
+
+<p>Commencez par récupérer le code source depuis le CVS :</p>
+<pre>cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/wikipediafs login
+ 
+cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/wikipediafs co -P wikipediafs
+</pre>
+<p>Ensuite, lisez le fichier INSTALL pour procéder à l'installation proprement dite.</p>
+
+<h2>Développement</h2>
+
+<p>WikipediaFS est écrit en <a href="http://www.python.org/">Python</a> et utilise <a href="http://fuse.sourceforge.net/">Fuse</a> ainsi que ses "bindings" Python.</p>
+
+<p>N'hésitez pas à rapporter les bugs rencontrés ou à envoyer des correctifs !</p>
+
+<h2>Liens</h2>
+
+<ul>
+<li><a href="http://sourceforge.net/projects/wikipediafs/">Page du projet WikipediaFS sur Sourceforge</a>.</li>
+</ul>
+
+<hr>
+<p>Copyrigth 2005 Mathieu Blondel (mblondel à users point sourceforge point net). Hébergement gracieusement offert par <a href="http://www.sourceforge.net/">Sourceforge</a>.</p>
+
+</body></html>

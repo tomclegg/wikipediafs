@@ -1,0 +1,9 @@
+# TODO
+
+- "watch" released articles when being a registered user
+- allow normal/minor edit switch when editing and default value in config.xml
+- manage edit conflicts
+- allow offline edition (a stack of articles the user may release whenever he
+wants)
+- allow article redirection
+

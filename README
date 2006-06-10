@@ -1,0 +1,185 @@
+WikipediaFS
+===========
+
+View and edit Wikipedia articles as if they were real files.
+
+Requirements
+------------
+
+Python 
+Fuse
+Python-Fuse
+
+Install
+-------
+
+($ su)
+# python setup.py install
+
+Configuration
+-------------
+
+The first time WikipediaFS is run, an XML configuration file is generated in
+~/.wikipediafs/config.xml. You can then edit it to add more Wikipedia or
+Mediawiki-based sites. Each site has a site entry defined as follows:
+
+<site>
+    <dirname>wikipedia-fr</dirname>
+    <host>fr.wikipedia.org</host>
+    <basename>/w/index.php</basename>
+    <username>Username</username>
+    <password>Password</password>
+</site>
+
+* dirname 
+
+Is the name of the directory through which you will access to the site.
+
+* host
+
+Is the host of the site.
+
+* basename
+
+Is the base of urls used by the site. Most of the time, it will be
+/dir/where/mediawiki/is/installed/index.php. For Wikipedia, it will be
+/w/index.php.
+
+* username and password
+
+Are optional and allow you to edit articles with your login.
+
+It is recommended to test WikipediaFS with a test site first. You can use
+mblondel.org, which is set with the default config, for this purpose.
+URL : http://www.mblondel.org/mediawiki/
+
+Mount
+-----
+
+$ mkdir ~/wfs/
+
+$ mount.wikipediafs ~/wfs/
+
+To run WikipediaFS without root privileges, you have to set the right
+permissions, for /usr/bin/fusermount and /dev/fuse. For example,
+
+# adduser your_username fuse
+# chmod 4750 /usr/bin/fusermount
+# chgrp fuse /dev/fuse /usr/bin/fusermount
+
+(You must log out and log in again so that changes are taken into account.)
+
+Unmount
+-------
+
+$ fusermount -u ~/wfs/
+
+fstab
+-----
+
+Add this line to /etc/fstab:
+
+none /mnt/wfs/ wikipediafs noauto,nouser,home=/home/your_username/
+
+Replace noauto by auto if you want WikipediaFS to be mounted at boot.
+Replace nouser by user if you want to allow simple users to use WikipediaFS.
+Replace /home/your_username/ by your home directory.
+
+The right permissions have to be set on the mounted directory.
+
+Then, you can use the following commands to mount and unmount WikipediaFS:
+
+$ mount /mnt/wfs/
+# umount /mnt/wfs/
+
+Usage
+-----
+
+This section demonstrates possible usage of WikipediaFS via the command
+line, though it is also possible to use WikipediaFS with a graphical file
+explorer.
+
+$ mount.wikipediafs /mnt/wfs/
+
+WikipediaFS is now mounted in /mnt/wfs/
+
+$ cd /mnt/wfs/
+
+We are now at the WikipediaFS root.
+
+$ ls
+mblondel.org/  wikipedia-en/
+
+Those are directories which have been defined in my config file.
+
+$ ls wikipedia-en/
+
+Nothing is listed because we have not used any file yet. This is why most of
+the time you will need a terminal to run the "your_favourite_editor file_name"
+command.
+
+$ cat wikipedia-en/Japan | less
+
+The Japan article is fetched on en.wikipedia.org and displayed.
+
+$ ls wikipedia-en/
+Japan
+
+Japan is now listed because it has been accessed once.
+
+$ vi mblondel.org/Test
+
+An article can be edited with a text editor. Looking at the article with a web
+browser, the changes have been performed correctly.
+
+To give a summary to your changes, use [[Summary: a sentence summary]] in the
+body of the article. It will be removed before the article is saved.
+
+$ cp wikipedia-en/Japan ~/Desktop/
+
+This backups the online article on the local disk.
+
+$ cp wikipedia-en/Japan mblondel.org/
+
+This copies the wikipedia-en article on my personal mediawiki site.
+
+$ rm mblondel.org/Test
+
+This only removes the article from the directory, not from the site, hopefully.
+
+Troubleshooting
+---------------
+
+** I get the "fuse: reading device: Bad file descriptor" error
+
+This error can be caused by a number of reasons:
+
+1/ the fuse module is not loaded:
+
+To test if it is loaded:
+# lsmod | grep fuse
+
+To load it:
+# modprobe fuse
+
+Add fuse to /etc/modules if you want this module to be loaded at boot.
+
+2/ WikipediaFS may still be mounted. Unmount it first.
+# umount /mount/path/
+
+
+** I get the "mount: unknown filesystem type 'wikipediafs'" error
+
+Try this:
+# ln -s /usr/bin/mount.wikipediafs /sbin/mount.wikipediafs
+
+** Other
+
+The FAQ available on the official Fuse website is worth reading.
+URL : http://fuse.sourceforge.net/
+
+License
+-------
+
+WikipediaFS is distributed under the terms of the GNU General Public
+License. See the COPYING file for more information.

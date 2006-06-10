@@ -1,0 +1,51 @@
+2006-06-10 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Switched to Sourceforge Subversion.
+
+2006-06-09 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed a bug with statfs.
+- Removed the <at-startup> tag (useless).
+- Removed the ability to mkdir wikipedia-xx (difficult bug).
+- Now gets "Unknown file or directory" if one article does not exist.
+
+2006-06-08 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Reorganized source tree.
+- Created setup.py.
+- Created mount.wikipediafs.
+- Made it work with fstab.
+- Clean and clear README.
+- Logging system.
+
+2005-03-22 Jean-Denis Vauguet <jd_@users.sourceforge.net>
+
+- Added a <at-startup> tag in config.xml to tell whether to mount a site.
+- Added full mkdir command.
+- Added full rmdir / rm -rf command.
+
+2005-03-22 Jean-Denis Vauguet <jd_@users.sourceforge.net>
+
+- An edit summary feature is now available.
+
+2005-03-20 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Added configuration and login. 
+
+2005-03-16 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed several bugs occuring with the vi editor.
+- Fixed a problem bringing conflicts at the publication time.
+
+
+2005-03-14 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed bug occuring when saving an article with the gedit editor.
+- Fixed a bug with rm command.
+
+2005-03-12 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Working with fuse 1.3 and python binding for this version.
+- ls, cat, mv, cp, pipes and redirections are working.
+- Text editors tested and that seem to work fine : kate, leaf and gedit.
+- Known bug : vi try to "getattr" an infinity of file when saving a modification...
