@@ -47,7 +47,7 @@ Is the base of urls used by the site. Most of the time, it will be
 
 * username and password
 
-Are optional and allow you to edit articles with your login.
+Are optional and enable you to edit articles with your login.
 
 It is recommended to test WikipediaFS with a test site first. You can use
 mblondel.org, which is set with the default config, for this purpose.
@@ -60,7 +60,7 @@ $ mkdir ~/wfs/
 
 $ mount.wikipediafs ~/wfs/
 
-To run WikipediaFS without root privileges, you have to set the right
+To run mount.wikipediafs without root privileges, you have to set the right
 permissions, for /usr/bin/fusermount and /dev/fuse. For example,
 
 # adduser your_username fuse
@@ -77,7 +77,9 @@ $ fusermount -u ~/wfs/
 fstab
 -----
 
-Add this line to /etc/fstab:
+Alternatively, you can mount WikipediaFS through fstab.
+
+To do so, add this line to /etc/fstab:
 
 none /mnt/wfs/ wikipediafs noauto,nouser,home=/home/your_username/
 
@@ -85,21 +87,21 @@ Replace noauto by auto if you want WikipediaFS to be mounted at boot.
 Replace nouser by user if you want to allow simple users to use WikipediaFS.
 Replace /home/your_username/ by your home directory.
 
-The right permissions have to be set on the mounted directory.
+The right permissions have to be set on the mounted directory (e.g. /mnt/wfs/).
 
 Then, you can use the following commands to mount and unmount WikipediaFS:
 
 $ mount /mnt/wfs/
 # umount /mnt/wfs/
 
-Usage
------
+Sample usage
+------------
 
 This section demonstrates possible usage of WikipediaFS via the command
 line, though it is also possible to use WikipediaFS with a graphical file
 explorer.
 
-$ mount.wikipediafs /mnt/wfs/
+$ mount /mnt/wfs/
 
 WikipediaFS is now mounted in /mnt/wfs/
 
@@ -172,6 +174,10 @@ Add fuse to /etc/modules if you want this module to be loaded at boot.
 
 Try this:
 # ln -s /usr/bin/mount.wikipediafs /sbin/mount.wikipediafs
+
+** I want to deal with articles with a non-ASCII file name.
+
+Set your terminal encoding to UTF-8.
 
 ** Other
 

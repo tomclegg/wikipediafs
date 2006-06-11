@@ -1,7 +1,8 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8;"/>
-<title>WikipediaFS, a virtual file system for Wikipedia</title>
+<title>WikipediaFS, view and edit Wikipedia articles as if they were real
+files</title>
 <style>
 body { background-color: white; }
 h1, h2, h3 { font-family: sans; color: #000000; }
@@ -13,49 +14,51 @@ h1, h2, h3 { font-family: sans; color: #000000; }
 
 <h1>WikipediaFS</h1>
 
-<p>WikipediaFS is a mountable Linux virtual file system that enables you to deal with <a href="http://www.wikipedia.org">Wikipedia</a> articles as though they were real files on your hard drive.</p>
+<p><em>View and edit Wikipedia articles as if they were real files.</em></p>
 
-<p>You can thus view and edit articles from your favourite text editor and benefit from its advantages (search & replace, wiki syntax highlighting, macros...) or drag and drop files from your computer to Wikipedia (and vice-versa).</p>
+<p>WikipediaFS is a mountable Linux virtual file system that enables you to deal
+with <a href="http://www.wikipedia.org">Wikipedia</a> (or
+any <a href="http://www.mediawiki.org/wiki/MediaWiki">Mediawiki</a>-based
+site) articles as if they were real files.</p>
 
-<p>Although WikipediaFS is already usable, no file release has been published yet. We invite people wanting to test the program or help to read « Download and Installation ».</p>
+<p>It is thus possible to use a real text editor to view and edit
+articles.</p>
 
-<p>It is <a href="http://www.gnu.org/philosophy/free-sw.html">free software</a>, covered by the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a> and provided without any warranty of any kind.</p>
+<p>It is <a href="http://www.gnu.org/philosophy/free-sw.html">free software</a>,
+covered by the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public
+License</a> and provided without any warranty of any kind.</p>
 
 <h2>Features</h2>
 
 <ul>
-<li>Support for usual file systems commands : cd, ls, cat, cp, mv, rm, pipe and redirection.</li>
-<li>Read and edit Wikipedia articles.</li>
-<li>Tested with emacs, vi, kate, gedit and leaf text editors.</li>
-<li>Working with Fuse 2.2.1 and Fuse 1.3.</li>
+<li>Read and edit articles.</li>
 <li>User configuration (cache time, sites).</li>
 <li>Login to enable editing with one's username.</li>
 </ul>
 
-<h2>Download and Installation</h2>
+<h2>Download</h2>
 
-<p>First, get the source code from the CVS.</p>
-<pre>
-cvs -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/wikipediafs login
- 
-cvs -z3 -d:pserver:anonymous@cvs.sourceforge.net:/cvsroot/wikipediafs co -P wikipediafs
-</pre>
-<p>Then, read the INSTALL file for further explanations.</p>
+<p><strong>Latest version:</strong> 0.1</p>
 
-<h2>Developement</h2>
+<p><a
+href="http://sourceforge.net/project/showfiles.php?group_id=133079">Download
+area</a></p>
 
-<p>WikipediaFS is written in <a href="http://www.python.org">Python</a> and uses <a href="http://fuse.sourceforge.net">Fuse</a> and its Python bindings.</p>
-
-<p>Feel free to report bugs or send patches !</p>
+<p>See the README file.</p>
 
 <h2>Related links</h2>
 
 <ul>
-<li><a href="http://sourceforge.net/projects/wikipediafs/">WikipediaFS project homepage at Sourceforge</a>.</li>
+<li><a href="http://sourceforge.net/projects/wikipediafs/">WikipediaFS project
+homepage at Sourceforge</a>.</li>
+<li><a href="http://svn.sourceforge.net/viewcvs.cgi/wikipediafs/">Subversion
+repository</a>.</li>
 </ul>
 
 <hr />
-<p>Copyrigth 2005 Mathieu Blondel (mblondel à users point sourceforge point net). Hosting graciously offered by <a href="http://www.sourceforge.net">Sourceforge</a>.</p>
+<p>Copyrigth 2005 - 2006 Mathieu Blondel (mblondel !AT! users *DOT*
+sourceforge *DOT* net). Hosting graciously offered by <a
+href="http://www.sourceforge.net">Sourceforge</a>.</p>
 
 </body>
 </html>

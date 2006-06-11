@@ -1,3 +1,8 @@
+2006-06-11 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Updated site.
+- Added make_release.sh.
+
 2006-06-10 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Switched to Sourceforge Subversion.
@@ -15,8 +20,8 @@
 - Created setup.py.
 - Created mount.wikipediafs.
 - Made it work with fstab.
-- Clean and clear README.
-- Logging system.
+- Cleaned and cleared README.
+- Create a logging system.
 
 2005-03-22 Jean-Denis Vauguet <jd_@users.sourceforge.net>
 
