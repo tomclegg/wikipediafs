@@ -95,7 +95,14 @@ class WikipediaUser:
         for info in self.wikipedia_article_list_infos:
             dir = self.cache_dir + '/' + info["list_name"]
             if not os.path.exists(dir):
-                os.mkdir(dir,0700)       
+                os.mkdir(dir,0700)
+            else:
+                # remove cache from previous sessions
+                for cache_file in os.listdir(dir):
+                    try:
+                        os.remove(os.path.join(dir, cache_file))
+                    except:
+                        pass
             
     def setCacheArticle(self,path,article_data):
         """
@@ -113,6 +120,12 @@ class WikipediaUser:
         ret = file.read()
         file.close()
         return ret
+
+    def cacheExists(self, path):
+        return os.path.exists(self.cache_dir + "/" + path)
+
+    def cacheMtime(self, path):
+        return os.path.getmtime(self.cache_dir + "/" + path)
     
     def createCacheDir(self,name):
         """

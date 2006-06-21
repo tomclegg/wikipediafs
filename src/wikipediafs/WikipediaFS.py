@@ -93,8 +93,9 @@ class WikipediaFS(Fuse):
         Gets a WikipediaArticle based on its associated file path.
         """
         current_dir = self.__getCurrentDirectory(relative_path)
-        file_name = self.__getFileName(relative_path) 
-        return self.article_list[current_dir][file_name]        
+        file_name = self.__getFileName(relative_path)
+         
+        return self.article_list[current_dir][file_name]
     
         
     def __isValidArticleName(self,name):
@@ -117,6 +118,8 @@ class WikipediaFS(Fuse):
         
         current_dir = self.__getCurrentDirectory(relative_path)
         file_name = self.__getFileName(relative_path)
+
+        self.__cacheArticleIfNecessary(relative_path)
         
                     
         if self.__isValidArticleName(file_name):
@@ -131,7 +134,7 @@ class WikipediaFS(Fuse):
                       
                 logger.info(msg % (relative_path,
                                    current_WikipediaArticle.wpEdittime,
-                                   current_WikipediaArticle. username)
+                                   current_WikipediaArticle.username)
                            )
                 
                 # Update wikipedia
@@ -149,12 +152,26 @@ class WikipediaFS(Fuse):
             if not self.article_list[current_dir].hasArticle(file_name):
                        
                 # Retrieving and caching the article
-                try:
+                try:                    
                     curr_list = self.article_list[current_dir]
                     art_obj = WikipediaArticle(file_name, curr_list)
-                    art_content = art_obj.get()
+
+                    if self.user.cacheExists(relative_path) and \
+                       int(time()) - self.user.cacheMtime(relative_path) < 5:
+                   
+                        # The file has just been created for the first time
+                        # It exists in the cache_dir/
+                        # (written by the write method)
+                        art_content = self.user.getCacheArticle(relative_path)
+                    else:
+                        # Cache does not exist
+                        # It mean that the first time the file is accessed
+                        # We get its content from the site
+                        art_content = art_obj.get()
+                    
                     
                     if len(art_content.strip()) > 0:
+                        
                         # Creating a cache file
                         self.user.setCacheArticle(relative_path, art_content)
                         
@@ -240,15 +257,15 @@ class WikipediaFS(Fuse):
             self.nb_getattr = 1
         else:
             # If more than 10 files have been getattred in less than 5 seconds,
-            # we are in an infinite loop
+            # we break the loop
             if int(time()) - self.last_getattr_time < 5 \
                 and self.nb_getattr > 10:
                 
                 in_infinite_loop = True
                 self.last_getattr_time = 0
                 self.nb_getattr = 0
-                logger.warning("Breaking infinite loop")
-                sleep(1)
+                logger.warning("Breaking loop")
+                sleep(7)
                 
             elif int(time()) - self.last_getattr_time > 5 \
                 and self.nb_getattr > 10:
