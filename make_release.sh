@@ -25,8 +25,10 @@ cd $TMP_DIR
 
 echo "Removing unnecessary files..."
 $RM `find . -name "*.pyc" -or -name ".*" -or -name "*~" -or -name "*.orig"`
+$RM "make_release.sh"
 
 echo "Updating version number..."
+echo "VERSION = '"$1"'" > src/wikipediafs/version.py
 echo $1 > VERSION
 
 cd ..
