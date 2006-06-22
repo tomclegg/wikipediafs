@@ -18,9 +18,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-import httplib, urllib, re, string
+import httplib, urllib, re, string, os, socket
 from sgmllib import SGMLParser
 from wikipediafs.logger import logger
+
+def set_proxy(conn):
+    if os.environ.has_key("http_proxy"):
+        http_proxy = os.environ["http_proxy"].replace("http://", "").rstrip("/")
+        (proxy_host, proxy_port) = http_proxy.split(":")
+        proxy_port = int(proxy_port)
+        proxy_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        proxy_sock.connect((proxy_host, proxy_port))
+        conn.sock = proxy_sock
 
 class WikipediaArticle(SGMLParser):
     """
@@ -46,10 +55,12 @@ class WikipediaArticle(SGMLParser):
         
         self.host = wikipedia_article_list.host
         
-        self.edit_page = wikipedia_article_list.basename + \
-                            "?title=%s&action=edit" % article_name
+        self.edit_page = 'http://' + self.host + \
+                         wikipedia_article_list.basename + \
+                         "?title=%s&action=edit" % article_name
                             
-        self.submit_page = wikipedia_article_list.basename + \
+        self.submit_page = 'http://' + self.host + \
+                            wikipedia_article_list.basename + \
                             "?title=%s&action=submit" % article_name
                                
         self.username = wikipedia_article_list.username
@@ -97,7 +108,9 @@ class WikipediaArticle(SGMLParser):
             headers["Cookie"] = self.cookie_string
               
         conn = httplib.HTTPConnection(self.host)
+        set_proxy(conn)
         conn.request("GET",self.edit_page,'',headers)
+        logger.info("HTTP GET %s" % self.edit_page)
         response = conn.getresponse()        
         
         # Feeds the SGMLparser
@@ -142,7 +155,9 @@ class WikipediaArticle(SGMLParser):
             headers["Cookie"] = self.cookie_string
         
         conn = httplib.HTTPConnection(self.host)
+        set_proxy(conn)
         conn.request("POST",self.submit_page, params, headers)
+        logger.info("HTTP POST %s" % self.submit_page)
         response = conn.getresponse()
         
         # Log http response        
@@ -151,7 +166,7 @@ class WikipediaArticle(SGMLParser):
         elif response.status == 200:
             logger.warning("Problems occured %s\n" % response.read())
         else:
-            logger.info("%d \n %s " % response.status,response.read())
+            logger.info("%d \n %s " % (response.status,response.read()))
 
         conn.close()
         
@@ -163,5 +178,5 @@ if __name__ == "__main__":
                                
     article = WikipediaArticle('Test', wal)
     print article.get()
-    article.set("Salut les copines ! (%s)" % \
+    article.set("Test ! (%s)" % \
         str(random.random()))

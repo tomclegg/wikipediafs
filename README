@@ -175,6 +175,10 @@ Add fuse to /etc/modules if you want this module to be loaded at boot.
 Try this:
 # ln -s /usr/bin/mount.wikipediafs /sbin/mount.wikipediafs
 
+** I need to connect through an HTTP proxy.
+
+Please use the $http_proxy environment variable.
+
 ** I want to deal with articles with a non-ASCII file name.
 
 Set your terminal encoding to UTF-8.

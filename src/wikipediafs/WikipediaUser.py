@@ -21,6 +21,7 @@
 import os, httplib, urllib, re
 from xml.dom import minidom
 from wikipediafs.logger import logger
+from wikipediafs.WikipediaArticle import set_proxy
 
 class WikipediaUser:
     """
@@ -179,6 +180,7 @@ class WikipediaUser:
                    "User-agent" : "WikipediaFS"}
         
         conn = httplib.HTTPConnection(host)
+        set_proxy(conn)
         conn.request("POST",login_page, params, headers)
         response = conn.getresponse()
         
@@ -224,7 +226,7 @@ class WikipediaUser:
         dict["basename"] = \
             str(site.getElementsByTagName("basename")[0].firstChild.nodeValue)
 
-        login_page = dict["basename"] + \
+        login_page = 'http://' + dict["host"] + dict["basename"] + \
             "?title=Special:Userlogin&action=submit&returnto=Special:Userlogin"
         
         dict["username"] = site.getElementsByTagName("username")
