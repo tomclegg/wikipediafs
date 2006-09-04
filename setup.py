@@ -12,4 +12,5 @@ setup(
     packages = ['wikipediafs'],
     package_dir = {'wikipediafs':'src/wikipediafs/'},
     scripts = ['src/mount.wikipediafs'],
+    data_files = [('/usr/share/man/man1/', ['doc/mount.wikipediafs.1.gz'])],
 )

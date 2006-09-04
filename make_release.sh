@@ -13,15 +13,23 @@ TAR_PKG="$PKG.tar.gz"
 ZIP_PKG="$PKG.zip"
 TMP_DIR="/tmp/$PKG"
 
-echo "Uploading site..."
-scp site/*.htm \
-mblondel@shell.sourceforge.net:/home/groups/w/wi/wikipediafs/htdocs/
-
 echo "Creating temporary directory..."
 $RM $TMP_DIR
 $MKDIR $TMP_DIR
 cp -r * $TMP_DIR
 cd $TMP_DIR
+
+echo "Creating man page"
+docbook-to-man doc/mount.wikipediafs.sgml > doc/mount.wikipediafs.1
+man2html -r doc/mount.wikipediafs.1 | sed -e "s/Content-type: text\/html//" \
+    > doc/mount.wikipediafs.htm
+gzip doc/mount.wikipediafs.1
+
+echo "Uploading site..."
+cp README README.txt
+scp site/*.htm doc/mount.wikipediafs.htm README.txt \
+mblondel@shell.sourceforge.net:/home/groups/w/wi/wikipediafs/htdocs/
+$RM README.txt
 
 echo "Removing unnecessary files..."
 $RM `find . -name "*.pyc" -or -name ".*" -or -name "*~" -or -name "*.orig"`

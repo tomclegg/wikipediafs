@@ -1,6 +1,7 @@
-2006-08-23 Mathieu Blondel <mblondel@users.sourceforge.net>
+2006-09-04 Mathieu Blondel <mblondel@users.sourceforge.net>
 
-- Improved README.
+- Added man page. Removed some informations from the README
+and referred users to the man page for easier maintenance.
 
 === WikipediaFS 0.2 ===
 
