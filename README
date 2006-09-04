@@ -60,14 +60,16 @@ $ mkdir ~/wfs/
 
 $ mount.wikipediafs ~/wfs/
 
-To run mount.wikipediafs without root privileges, you have to set the right
-permissions, for /usr/bin/fusermount and /dev/fuse. For example,
+To run mount.wikipediafs without root privileges, you may have to set the right
+permissions for /usr/bin/fusermount and /dev/fuse if your distribution has not
+already done it for you. For example,
 
 # adduser your_username fuse
 # chmod 4750 /usr/bin/fusermount
 # chgrp fuse /dev/fuse /usr/bin/fusermount
 
-(You must log out and log in again so that changes are taken into account.)
+(You may have to log out and log in again so that changes are taken into
+account.)
 
 Unmount
 -------
