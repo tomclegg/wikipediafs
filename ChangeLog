@@ -1,3 +1,7 @@
+2006-10-09 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed bug when using non-ascii characters in config file.
+
 2006-09-04 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Added man page. Removed some informations from the README
@@ -70,4 +74,5 @@ and referred users to the man page for easier maintenance.
 - Working with fuse 1.3 and python binding for this version.
 - ls, cat, mv, cp, pipes and redirections are working.
 - Text editors tested and that seem to work fine : kate, leaf and gedit.
-- Known bug : vi try to "getattr" an infinity of file when saving a modification...
+- Known bug : vi try to "getattr" an infinity of file when saving a 
+modification...

@@ -31,6 +31,7 @@ class WikipediaUser:
     """
 
     default_config = """\
+<?xml version="1.0" encoding="UTF-8"?>
 <wfs-config>
     <general>
         <!-- Cache time in seconds -->
@@ -217,28 +218,28 @@ class WikipediaUser:
     def __getConfigSiteDict(self,site):
         dict = {}
         
-        dict["list_name"] = \
-            str(site.getElementsByTagName("dirname")[0].firstChild.nodeValue)
+        dirname_child = site.getElementsByTagName("dirname")[0].firstChild
+        dict["list_name"] = dirname_child.nodeValue.encode("utf-8")
             
-        dict["host"] = \
-            str(site.getElementsByTagName("host")[0].firstChild.nodeValue)
+        host_child = site.getElementsByTagName("host")[0].firstChild    
+        dict["host"] = host_child.nodeValue.encode("utf-8")
         
-        dict["basename"] = \
-            str(site.getElementsByTagName("basename")[0].firstChild.nodeValue)
+        basename_child = site.getElementsByTagName("basename")[0].firstChild
+        dict["basename"] = basename_child.nodeValue.encode("utf-8")
 
         login_page = 'http://' + dict["host"] + dict["basename"] + \
             "?title=Special:Userlogin&action=submit&returnto=Special:Userlogin"
         
-        dict["username"] = site.getElementsByTagName("username")
+        username = site.getElementsByTagName("username")
         password = site.getElementsByTagName("password")
         
-        if dict["username"].length == 1:
-            dict["username"] = str(dict["username"][0].firstChild.nodeValue)
+        if username.length == 1:
+            dict["username"] = username[0].firstChild.nodeValue.encode("utf-8")
         else:
             dict["username"] = None
 
         if password.length == 1:
-            password = str(password[0].firstChild.nodeValue)
+            password = password[0].firstChild.nodeValue.encode("utf-8")
         else:
             password = None
         
@@ -256,12 +257,14 @@ class WikipediaUser:
         
 if __name__ == "__main__":
     config_test = """\
+<?xml version="1.0" encoding="UTF-8"?>
 <wfs-config>
     <general>
         <!-- Cache time in seconds -->
         <article-cache-time>300</article-cache-time>
     </general>
     <sites>
+        <!--
         <site>
             <dirname>wikipedia-fr</dirname>
             <host>fr.wikipedia.org</host>
@@ -269,6 +272,7 @@ if __name__ == "__main__":
             <username>Username</username>
             <password>Password</password>
         </site>
+        -->
         <site>
             <dirname>mblondel.org</dirname>
             <host>www.mblondel.org</host>
