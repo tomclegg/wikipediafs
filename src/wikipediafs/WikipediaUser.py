@@ -198,6 +198,7 @@ class WikipediaUser:
         
         if len(cookie_list) == 4:
             cookie_list.pop()
+            logger.info("; ".join(cookie_list))
             return "; ".join(cookie_list)
         else:
             return None
