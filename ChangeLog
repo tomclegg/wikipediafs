@@ -1,3 +1,8 @@
+2007-04-01 Neil Harris <neil@tonal.clara.co.uk>
+
+- Fixed a long-standing problem in writing to pages with hidden deleted
+revisions.
+
 2006-10-09 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Fixed bug when using non-ascii characters in config file.

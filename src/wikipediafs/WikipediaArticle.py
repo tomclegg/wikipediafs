@@ -50,6 +50,7 @@ class WikipediaArticle(SGMLParser):
         self.content = ""
         self.textarea = False
         self.wpEdittime = 0
+        self.wpStarttime = 0
         self.wpEditToken = None
         self.last_open_time = 0
         
@@ -82,6 +83,8 @@ class WikipediaArticle(SGMLParser):
             self.wpEdittime = attrs[1][1]
         elif len(attrs) == 3 and attrs[2][1] == "wpEditToken":
             self.wpEditToken = attrs[1][1]            
+        elif len(attrs) == 3 and attrs[2][1] == "wpStarttime":
+            self.wpStarttime = attrs[1][1]            
             
     def end_textarea(self):
         """
@@ -140,7 +143,7 @@ class WikipediaArticle(SGMLParser):
        
         # wpEdittime is empty if the article is a new article
         params = {"wpTextbox1" : article_data, "wpSummary" : wpSummary, \
-        "wpEdittime" : self.wpEdittime, "wpSave" : 1}
+        "wpEdittime" : self.wpEdittime, "wpStarttime": self.wpStarttime, "wpSave" : 1}
         
         # Needed for logged in edition
         if self.wpEditToken is not None:
