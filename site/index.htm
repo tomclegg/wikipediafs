@@ -47,8 +47,27 @@ area</a></p>
 <p>See the <a href="README.txt">README</a> file and the <a
 href="mount.wikipediafs.htm">manual page</a>.</p>
 
-<p>For convenience, you can download fuse python bindings <a
-href="python-fuse-2.5.tar.bz2">here</a>.
+<h2>Current status</h2>
+
+<p>For short:</p>
+
+<ul>
+<li>WikipediaFS depends on the python bindings for fuse. Unfortenately, previous
+stable releases are not available from the <a
+href="http://fuse.sourceforge.net/wiki/index.php/FusePython">official
+web site</a> anymore.</li>
+<li>The development version, which is the only currently available from the
+the official web site, is not compatible with WikipediaFS. Don't use it
+with WikipediaFS!</li>
+<li>Our policy is to wait until
+the bindings get released before making WikipediaFS compatible with
+them.</li>
+<li>In the interim, the <a href="python-fuse-2.5.tar.bz2">following</a> package
+of the bindings, which comes from Debian, may work for you.</li>
+<li>Debian is currently the distribution that has probably the best support for
+WikipediaFS. WikipediaFS is currently packaged in Debian using previous
+releases of the bindings.</li>
+</ul>
 
 <h2>Related links</h2>
 
