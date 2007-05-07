@@ -1,3 +1,7 @@
+2007-05-07 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Updated web site (local link to python fuse bindings).
+
 2007-04-01 Neil Harris <neil@tonal.clara.co.uk>
 
 - Fixed a long-standing problem in writing to pages with hidden deleted
