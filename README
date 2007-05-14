@@ -1,0 +1,56 @@
+WikipediaFS
+===========
+
+View and edit Wikipedia articles as if they were real files.
+
+Requirements
+------------
+
+Python 
+Fuse
+Python-Fuse
+
+Install
+-------
+
+($ su)
+# python setup.py install
+
+Manual
+------
+
+$ man mount.wikipediafs
+
+The manual page describes in details the configuration file, mount/umount and
+sample usage. It is also available as HTML in doc/.
+
+Troubleshooting
+---------------
+
+** I get the "fuse: reading device: Bad file descriptor" error
+
+The fuse module is probably not loaded:
+
+To test if it is loaded:
+# lsmod | grep fuse
+
+To load it:
+# modprobe fuse
+
+Add fuse to /etc/modules if you want this module to be loaded at boot.
+
+** I get the "mount: unknown filesystem type 'wikipediafs'" error
+
+Try this:
+# ln -s /usr/bin/mount.wikipediafs /sbin/mount.wikipediafs
+
+** Other
+
+The FAQ available on the official Fuse website is worth reading.
+URL : http://fuse.sourceforge.net/
+
+License
+-------
+
+WikipediaFS is distributed under the terms of the GNU General Public
+License. See the COPYING file for more information.
