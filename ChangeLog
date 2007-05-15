@@ -1,3 +1,10 @@
+2007-05-15 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Moved cookie support code to user.py.
+- Created http.py.
+- Added support for httpauth, based on a patch from Johannes Wolter.
+- Added support for https.
+
 2007-05-14 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Rewrote code concerning config file and moved it to config.py.

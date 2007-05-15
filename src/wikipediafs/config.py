@@ -35,13 +35,30 @@ class Config:
         <article-cache-time>300</article-cache-time>
     </general>
     <sites>
-        <!-- <site>
+        <!-- 
+        Minimalist site entry sample:
+        <site>
             <dirname>wikipedia-fr</dirname>
             <host>fr.wikipedia.org</host>
             <basename>/w/index.php</basename>
+        </site>
+        And another one with all possible informations:
+        <site>
+            <dirname>wikipedia-fr</dirname>
+            <host>fr.wikipedia.org</host>
+            <port>443</port>
+            <basename>/w/index.php</basename>
             <username>Username</username>
             <password>Password</password>
-        </site>-->
+            <https />
+            <httpauth_username>Username</httpauth_username>
+            <httpauth_password>Password</httpauth_password>
+        </site>
+        -->        
+        <!--
+            Below a Mediawiki test site.
+            Feel free to use it!
+        --> 
         <site>
             <dirname>mblondel.org</dirname>
             <host>www.mblondel.org</host>
@@ -89,14 +106,19 @@ class Config:
         sites = self.__config.getElementsByTagName("site")
         for site in sites:
              dic = {}
-             for ele in ('dirname', 'host', 'basename', 'username',
-             'password'):
+             for ele in ("dirname", "host", "basename", "username",
+             "password", "https", "port", "httpauth_username",
+             "httpauth_password"):
                 node = site.getElementsByTagName(ele)
                 if node.length == 1:
-                    dic[ele] = node[0].firstChild.nodeValue.encode("utf-8")
+                    if node[0].firstChild:
+                        dic[ele] = node[0].firstChild.nodeValue.encode("utf-8")
+                    else:
+                        dic[ele] = True # for elements like <https />
                 else:
                     dic[ele] = None
-             self.sites[dic['dirname']] = dic
+                    
+             self.sites[dic["dirname"]] = dic
 
 
     def __setCacheTime(self):
@@ -129,6 +151,8 @@ if __name__ == "__main__":
             <dirname>mblondel.org</dirname>
             <host>www.mblondel.org</host>
             <basename>/mediawiki/index.php</basename>
+            <https />
+            <port>8080</port>
         </site>
     </sites>
 </wfs-config>
