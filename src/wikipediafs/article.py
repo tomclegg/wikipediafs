@@ -109,10 +109,8 @@ class Article(SGMLParser):
               
         conn = ExtendedHTTPConnection(self.host, self.port, self.https)
 
-        conn.set_proxy()
-
         if self.httpauth_username and self.httpauth_password:
-            conn.http_auth(httpauth_username, httpauth_password)
+            conn.http_auth(self.httpauth_username, self.httpauth_password)
 
         conn.add_headers(headers)
         conn.request(self.edit_page)
@@ -158,7 +156,9 @@ class Article(SGMLParser):
             headers["Cookie"] = self.cookie_str
         
         conn = ExtendedHTTPConnection(self.host, self.port, self.https)
-        conn.set_proxy()
+
+        if self.httpauth_username and self.httpauth_password:
+            conn.http_auth(self.httpauth_username, self.httpauth_password)
 
         conn.add_headers(headers)
         conn.add_data(params)
@@ -187,11 +187,18 @@ if __name__ == "__main__":
         "basename" : "/mediawiki/index.php",
         "https" : True
     }
-
-    # Used username and password if any
+    
     if len(sys.argv) == 3:
+        # Uses username and password if passed
         user = User(sys.argv[1], sys.argv[2], **params)
         params["cookie_str"] = user.getCookieString()
+    elif len(sys.argv) == 5:
+        # Same as above + http auth
+        params["httpauth_username"] = sys.argv[3]
+        params["httpauth_password"] = sys.argv[4]
+        
+        user = User(sys.argv[1], sys.argv[2], **params)
+        params["cookie_str"] = user.getCookieString()                
     
     art = Article("Test", **params)
     print art.get()

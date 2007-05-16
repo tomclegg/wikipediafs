@@ -1,3 +1,7 @@
+2007-05-16 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed proxy and http auth support.
+
 2007-05-15 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Moved cookie support code to user.py.

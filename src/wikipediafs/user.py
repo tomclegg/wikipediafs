@@ -66,10 +66,8 @@ class User:
         
         conn = ExtendedHTTPConnection(self.host, self.port, self.https)
         
-        conn.set_proxy() # sets proxy if needed
-
         if self.httpauth_username and self.httpauth_password:
-            conn.http_auth(httpauth_username, httpauth_password)
+            conn.http_auth(self.httpauth_username, self.httpauth_password)
 
         conn.add_data(params)
         conn.add_headers(headers)

@@ -19,7 +19,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import os, socket, string, base64
-from httplib import HTTPConnection, HTTPSConnection
+import httplib
 
 class ExtendedHTTPConnection:
     """
@@ -33,10 +33,21 @@ class ExtendedHTTPConnection:
         else:
             port = int(port)
 
-        if https:
-            self.conn = HTTPSConnection(host, port)
+        self.https = https
+        self.port = port
+        self.host = host 
+
+        if os.environ.has_key("http_proxy"):
+            self.proxy_enabled = True
+
+            self.conn = self.get_proxy_connection()
         else:
-            self.conn = HTTPConnection(host, port)
+            self.proxy_enabled = False
+            
+            if https:
+                self.conn = httplib.HTTPSConnection(host, port)
+            else:
+                self.conn = httplib.HTTPConnection(host, port)
 
         self.headers = {}
         self.data = None
@@ -48,13 +59,25 @@ class ExtendedHTTPConnection:
         for k, v in headers.items():
             self.add_header(k, v)
 
-    def request(self, url):
+    def request(self, path):
         if self.data:
             method = "POST"
         else:
             method = "GET"
 
-        self.conn.request(method, url, self.data, self.headers)
+        if self.https:
+            proto = "https"
+        else:
+            proto = "http"
+
+        if self.proxy_enabled:
+            # the full url is of course needed
+             url = "%s://%s:%d%s" % (proto, self.host, self.port, path)
+        else:
+            url = path
+
+        
+        return self.conn.request(method, url, self.data, self.headers)
 
     def getresponse(self, *args):
         return self.conn.getresponse(*args)
@@ -65,21 +88,23 @@ class ExtendedHTTPConnection:
     def add_data(self, data):
         self.data = data
 
-    def set_proxy(self):
+    def get_proxy_connection(self):
         """
         Sets proxy if needed.
         """
-        if os.environ.has_key("http_proxy"):
-            http_proxy = os.environ["http_proxy"]
-            http_proxy = http_proxy.replace("http://", "").rstrip("/")
-            (proxy_host, proxy_port) = http_proxy.split(":")
-            proxy_port = int(proxy_port)
-            proxy_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            proxy_sock.connect((proxy_host, proxy_port))
-            self.sock = proxy_sock
+        http_proxy = os.environ["http_proxy"]
+        http_proxy = http_proxy.replace("http://", "").rstrip("/")
+        (proxy_host, proxy_port) = http_proxy.split(":")
+        proxy_port = int(proxy_port)
+        
+        if self.https:
+            return httplib.HTTPConnection(proxy_host, proxy_port)
+        else:
+            return httplib.HTTPConnection(proxy_host, proxy_port)
+
 
     def http_auth(self, username, password):
         httpbasicauth = "%s:%s" % (username, password)
-        add_header("Authorization",
+        self.add_header("Authorization",
                    "Basic %s" % base64.encodestring(httpbasicauth).strip())
                    
