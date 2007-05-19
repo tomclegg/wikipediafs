@@ -1,0 +1,268 @@
+<!doctype refentry PUBLIC "-//OASIS//DTD DocBook V4.1//EN" [
+
+<!-- Process this file with docbook-to-man to generate an nroff manual
+     page: `docbook-to-man manpage.sgml > manpage.1'.  You may view
+     the manual page with: `docbook-to-man manpage.sgml | nroff -man |
+     less'.  A typical entry in a Makefile or Makefile.am is:
+
+manpage.1: manpage.sgml
+	docbook-to-man $< > $@
+  -->
+
+  <!-- Fill in the various UPPER CASE things here. -->
+  <!ENTITY manfirstname "<firstname>Mathieu</firstname>">
+  <!ENTITY mansurname   "<surname>Blondel</surname>">
+  <!-- Please adjust the date whenever revising the manpage. -->
+  <!ENTITY mandate      "<date>Thu, 20 Jun 2006 13:16:17 -0700</date>">
+  <!-- SECTION should be 1-8, maybe with subsection. Other parameters are
+       allowed: see man(7), man(1). -->
+  <!ENTITY mansection   "<manvolnum>8</manvolnum>">
+  <!ENTITY manemail     "<email>mblondel@users.sourceforge.net</email>">
+  <!ENTITY manusername  "sdffsd">
+  <!ENTITY manucpackage "<refentrytitle>MOUNT.WIKIPEDIAFS</refentrytitle>">
+  <!ENTITY manpackage   "mount.wikipediafs">
+]>
+
+<refentry>
+  <refentryinfo>
+    <address>
+      &manemail;
+    </address>
+    <author>
+      &manfirstname;
+      &mansurname;
+    </author>
+    <copyright>
+      <year>2004</year>
+      <holder>&manusername;</holder>
+    </copyright>
+    &mandate;
+  </refentryinfo>
+  <refmeta>
+    &manucpackage;
+
+    &mansection;
+  </refmeta>
+  <refnamediv>
+    <refname>&manpackage;</refname>
+
+    <refpurpose>A program to mount WikipediaFS, a filesystem that allows to view
+and edit Wikipedia articles as if they were real files</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&manpackage; </command>
+      <replaceable>mountpoint</replaceable>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+  <refsect1>
+    <title>DESCRIPTION</title>
+    <para>This manual page documents the <command>&manpackage;</command>
+        command and general usage of WikipediaFS.</para>
+    
+    <para>WikipediaFS allows to view and edit Wikipedia articles as if
+they were real files. <command>&manpackage;</command> mounts a WikipediaFS
+filesystem.
+    </para>
+    
+    <para>To connect through an HTTP proxy, you can use the $http_proxy
+environment variable.</para>
+    
+  </refsect1>
+
+  <refsect1>
+      <title>CONFIGURATION</title>
+      
+      <para>The first time WikipediaFS is run, an XML configuration file is
+          generated in ~/.wikipediafs/config.xml. You can then edit it to add
+          more Wikipedia or Mediawiki-based sites. Each site has a site entry
+          defined as follows: </para>
+      
+      <para>
+          &lt;site&gt; 
+          &lt;dirname&gt;wikipedia-fr&lt;/dirname&gt;
+          &lt;host&gt;fr.wikipedia.org&lt;/host&gt;
+          &lt;basename&gt;/w/index.php&lt;/basename&gt;
+          &lt;username&gt;Username&lt;/username&gt;
+          &lt;password&gt;Password&lt;/password&gt;
+          &lt;/site&gt;
+      </para>
+      
+      <variablelist>
+          <varlistentry>
+              <term>dirname</term>
+              <listitem>
+                  <para>
+                      Is the name of the directory through which you will access
+                      to the site.
+                  </para>
+              </listitem>
+          </varlistentry>   
+          <varlistentry>
+              <term>host</term>
+              <listitem>
+                  <para>
+                      Is the host of the site.
+                  </para>
+              </listitem>
+          </varlistentry>   
+          <varlistentry>
+              <term>basename</term>
+              <listitem>
+                  <para>
+                      Is the base of urls used by the site. Most of the time, it
+                      will be /dir/where/mediawiki/is/installed/index.php. For
+                      Wikipedia, it will be /w/index.php.
+                  </para>
+              </listitem>
+          </varlistentry>    
+          <varlistentry>
+              <term>username and password</term>
+              <listitem>
+                  <para>
+                      Are optional and enable you to edit articles with your
+                      login.
+                  </para>
+              </listitem>
+          </varlistentry>      
+      </variablelist>
+</refsect1>
+   
+  <refsect1>
+    <title>MOUNT</title>
+    <para><command>mount.wikipediafs</command> mountpoint/</para>
+    
+    <para>To run mount.wikipediafs without root privileges, you may have to set
+    the right permissions for /usr/bin/fusermount and /dev/fuse if your
+    distribution has not already done it for you. For example,</para>
+  
+  <para># adduser your_username fuse</para>
+  
+  <para># chmod 4750 /usr/bin/fusermount</para>
+  
+  <para># chgrp fuse /dev/fuse /usr/bin/fusermount</para>
+  
+  
+  <para>(You may have to log out and log in again so that changes are taken
+into account.)</para>
+</refsect1>
+
+  <refsect1>
+      <title>UNMOUNT</title>
+      
+      <para><command>fusermount</command> -u mountpoint/</para>
+  
+</refsect1>
+
+  <refsect1>
+    <title>FSTAB</title>
+    
+    <para>Alternatively, you can mount WikipediaFS through fstab.</para>
+  
+    <para>To do so, add this line to /etc/fstab:</para>
+  
+    <para>none /mnt/wfs/ wikipediafs
+noauto,nouser,home=/home/your_username/</para>
+  
+        <para>Replace noauto by auto if you want WikipediaFS to be mounted at
+boot. Replace nouser by user if you want to allow simple users to use
+WikipediaFS. Replace /home/your_username/ by your home directory.</para>
+ 
+<para>Then, traditional mount and unmount can be used with WikipediaFS.</para>
+</refsect1>
+
+<refsect1>
+  <title>SAMPLE USAGE</title>
+  <para>This section demonstrates possible usage of WikipediaFS via the command
+line, though it is also possible to use WikipediaFS with a graphical file
+explorer.</para>
+
+<para>$ mount /mnt/wfs/
+
+WikipediaFS is now mounted in /mnt/wfs/</para>
+
+<para>$ cd /mnt/wfs/
+
+We are now at the WikipediaFS root.</para>
+
+<para>$ ls
+mblondel.org/  wikipedia-en/
+
+Those are directories which have been defined in my config file.</para>
+
+<para>$ ls wikipedia-en/
+
+Nothing is listed because we have not used any file yet. This is why most of
+the time you will need a terminal to run the "your_favourite_editor file_name"
+command.</para>
+
+<para>$ cat wikipedia-en/Japan | less
+
+The Japan article is fetched on en.wikipedia.org and displayed.</para>
+
+<para>$ ls wikipedia-en/
+Japan
+
+Japan is now listed because it has been accessed once.</para>
+
+<para>$ vi mblondel.org/Test
+
+An article can be edited with a text editor. Looking at the article with a web
+browser, the changes have been performed correctly.
+
+To give a summary to your changes, use [[Summary: a sentence summary]] in the
+body of the article. It will be removed before the article is saved.</para>
+
+<para>$ cp wikipedia-en/Japan ~/Desktop/
+
+This backups the online article on the local disk.</para>
+
+<para>$ cp wikipedia-en/Japan mblondel.org/
+
+This copies the wikipedia-en article on my personal mediawiki site.</para>
+
+<para>$ rm mblondel.org/Test
+
+This only removes the article from the directory, not from the site,
+hopefully.</para>
+</para>
+</refsect1>
+
+<refsect1>
+    <title>AUTHOR</title>
+
+    <para>This manual page was written by <author>&manfirstname; 
+     &mansurname;</author>. </para>
+
+    <para>This manual page is (c) 2006 of <author>&manfirstname;
+&mansurname;</author> and licensed under the terms of the GPLv2 or higher
+</para>
+    
+  </refsect1>
+  <refsect1>
+    <title>SEE ALSO</title>
+
+    <para><citerefentry><refentrytitle>mount</refentrytitle><manvolnum>8</manvolnum>
+        </citerefentry>,
+	<citerefentry><refentrytitle>fstab</refentrytitle><manvolnum>5</manvolnum>
+        </citerefentry>
+    </para>
+  </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: sgml
+sgml-omittag:t
+sgml-shorttag:t
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-default-dtd-file:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->

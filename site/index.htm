@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8;"/>
+<title>WikipediaFS, view and edit Wikipedia articles as if they were real
+files</title>
+<style>
+body { background-color: white; }
+h1, h2, h3 { font-family: sans; color: #000000; }
+</style>
+</head>
+<body>
+
+<p><a href="index_fr.htm" title="Page française">Page française</a></p>
+
+<h1>WikipediaFS</h1>
+
+<p><em>View and edit Wikipedia articles as if they were real files.</em></p>
+
+<p>WikipediaFS is a mountable Linux virtual file system that enables you to deal
+with <a href="http://www.wikipedia.org">Wikipedia</a> (or
+any <a href="http://www.mediawiki.org/wiki/MediaWiki">Mediawiki</a>-based
+site) articles as if they were real files.</p>
+
+<p>It is thus possible to use a real text editor to view and edit
+articles.</p>
+
+<p>It is <a href="http://www.gnu.org/philosophy/free-sw.html">free software</a>,
+covered by the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public
+License</a> and provided without any warranty of any kind.</p>
+
+<h2>Features</h2>
+
+<ul>
+<li>Read and edit articles.</li>
+<li>User configuration (cache time, sites).</li>
+<li>Login to enable editing with one's username.</li>
+</ul>
+
+<h2>Download</h2>
+
+<p><strong>Latest version:</strong> 0.2</p>
+
+<p><a
+href="http://sourceforge.net/project/showfiles.php?group_id=133079">Download
+area</a></p>
+
+<p>See the <a href="README.txt">README</a> file and the <a
+href="mount.wikipediafs.htm">manual page</a>.</p>
+
+<h2>Current status</h2>
+
+<p>For short:</p>
+
+<ul>
+<li>WikipediaFS depends on the python bindings for fuse. Unfortunately, previous
+stable releases are not available from the <a
+href="http://fuse.sourceforge.net/wiki/index.php/FusePython">official
+web site</a> anymore.</li>
+<li>The development version, which is the only currently available from the
+the official web site, is not compatible with WikipediaFS. Don't use it
+with WikipediaFS!</li>
+<li>Our policy is to wait until
+the bindings get released before making WikipediaFS compatible with
+them.</li>
+<li>In the interim, the <a href="python-fuse-2.5.tar.bz2">following</a> package
+of the bindings, which comes from Debian, may work for you.</li>
+<li>Debian is currently the distribution that has probably the best support for
+WikipediaFS. WikipediaFS is currently packaged in Debian using previous
+releases of the bindings.</li>
+</ul>
+
+<p>Because we think that WikipediaFS is an interesting idea, we are looking for
+co-maintainers and volunteers to help make WikipediaFS a more active
+project!</p>
+<h2>Related links</h2>
+
+<ul>
+<li><a href="http://sourceforge.net/projects/wikipediafs/">WikipediaFS project
+homepage at Sourceforge</a> (mailing-lists, bug tracker...).</li>
+<li><a href="http://svn.sourceforge.net/viewcvs.cgi/wikipediafs/">Subversion
+repository</a>.</li>
+</ul>
+
+<hr />
+<p>Copyrigth 2005 - 2006 Mathieu Blondel (mblondel !AT! users *DOT*
+sourceforge *DOT* net). Hosting graciously offered by <a
+href="http://www.sourceforge.net">Sourceforge</a>.</p>
+
+</body>
+</html>
