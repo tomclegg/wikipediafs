@@ -86,6 +86,8 @@ class Config:
             self.__config = minidom.parseString(config_str).documentElement
                             
         self.__setCacheTime()
+
+        self.__setDebug()
             
         self.__setSites()
             
@@ -129,15 +131,25 @@ class Config:
             self.cache_time = val
         except:
             self.cache_time = 300
+
+    def __setDebug(self):
+        element = self.__config.getElementsByTagName("debug")
+        if element.length == 0:
+            self.debug_mode = False
+        else:
+            self.debug_mode = True                        
         
         
-if __name__ == "__main__":
+if __name__ != "__main__":
+    config = Config()
+else:    
     config_test = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <wfs-config>
     <general>
         <!-- Cache time in seconds -->
         <article-cache-time>300</article-cache-time>
+        <debug />
     </general>
     <sites>        
         <site>
@@ -160,5 +172,6 @@ if __name__ == "__main__":
     
     config = Config(config_test)
     print "cache time:", config.cache_time
+    print "debug:", config.debug_mode
     for k, v in config.sites.items():
         print k, v
