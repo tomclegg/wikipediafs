@@ -243,7 +243,7 @@ class MetaDir(Fuse):
         if dir(d).count("mkdir") == 0:
             return -errno.EACCES # Permission denied
         else:
-            res = d.mkdir(path, mode)
+            res = d.mkdir(path)
             if res != True:
                 return -errno.EACCES # Permission denied
 

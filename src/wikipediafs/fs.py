@@ -32,26 +32,31 @@ class ArticleDir:
         self.files = {}
         self.dirs = {}
 
-    def get_article_name(self, path):
+    def get_article_full_name(self, path):
         # Returns article name. This can include subpages.
         return '/'.join(path.split("/")[2:])
 
+    def get_article_file_name(self, path):
+        # File name as used in the directory i.e. without the subpages.
+        return os.path.basename(path)
+
     def is_valid_file(self, path):
-        name = self.get_article_name(path)
-        if name[-3:] == ".mw":
+        file_name = self.get_article_file_name(path)
+        if file_name[-3:] == ".mw":
             return True
         else:
             return False
 
     def contents(self, path):
-        arr = []
+        arr = self.dirs.keys()
         for k in self.files.keys():
             if not self.files[k].is_empty:
                 arr.append(k)
         return arr
             
     def is_directory(self, path):
-        return False
+        name = self.get_article_file_name(path)
+        return self.dirs.has_key(name)
 
     def is_file(self, path):
         if self.is_valid_file(path):
@@ -64,28 +69,30 @@ class ArticleDir:
             return False
 
     def read_file(self, path):
-        name = self.get_article_name(path)
-        if self.files.has_key(name):
-            art = self.files[name]
+        file_name = self.get_article_file_name(path)
+        full_name = self.get_article_full_name(path)
+        if self.files.has_key(file_name):
+            art = self.files[file_name]
         else:
-            art = Article(name[0:-3], # removes .mw from the name
+            art = Article(full_name[0:-3], # removes .mw from the name
                           cache_time=CONFIG.cache_time,
                           logger = LOGGER,
                           **self.config)
             txt = art.get()
-            self.files[name] = art
+            self.files[file_name] = art
         return art.get()
 
-    def write_to(self, path, txt):        
-        name = self.get_article_name(path)
-        if self.files.has_key(name):
-            art = self.files[name]
+    def write_to(self, path, txt):
+        file_name = self.get_article_file_name(path)
+        full_name = self.get_article_full_name(path)
+        if self.files.has_key(file_name):
+            art = self.files[file_name]
         else:
-            art = Article(name[0:-3],
+            art = Article(full_name[0:-3],
                           cache_time=CONFIG.cache_time,
                           logger = LOGGER,
                           **self.config)
-            self.files[name] = art
+            self.files[file_name] = art
         art.set(txt)
 
     def size(self, path):
@@ -95,12 +102,18 @@ class ArticleDir:
         return 0755
                  
     def unlink(self, path):
-        name = self.get_article_name(path)
-        if self.files.has_key(name):
-            self.files.pop(name)
+        file_name = self.get_article_file_name(path)
+        if self.files.has_key(file_name):
+            self.files.pop(file_name)
             return True # succeeded
         else:
-            return False                    
+            return False
+                            
+    def mkdir(self, path):
+        name = self.get_article_file_name(path)
+        self.dirs[name] = True        
+        self.fs.set_dir(path, ArticleDir(self.fs, self.config))
+        return True                               
 
 class Root:
     def __init__(self, fs):
@@ -134,7 +147,7 @@ class Root:
     def mode(self, path):
         return 0755
 
-    def mkdir(self, path, mode):
+    def mkdir(self, path):
         # add a site from the wikimedia foundation
         basename = os.path.basename(path)
         match = self.regexp.match(basename)
