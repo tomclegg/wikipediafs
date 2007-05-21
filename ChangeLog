@@ -16,6 +16,12 @@ order to prevent confusion.
 - Set default cache time to 30 seconds instead of 300 seconds. Too big cache
 time may cause edit conflicts with people editing the same article.
 
+- mkdir (wikipedia|wiktionary|wikiquote|wikibooks|wikisource)-lang (e.g.
+mkdir wikipedia-fr) automatically sets a working directory for the concerned
+site from the wikimedia foundation.
+
+- Added subfolder support (yay !).
+
 2007-05-19 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Added a debug mode option in the config.
