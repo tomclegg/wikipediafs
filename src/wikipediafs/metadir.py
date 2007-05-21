@@ -294,6 +294,7 @@ class MetaDir(Fuse):
                 # from an editor file to a valid file
                 buf = self.get_file_buf(path)                
                 d.write_to(path1, buf.getvalue())
+                self.open_mode = None
                 self.remove_file_buf(path)
             elif not self.is_valid_file(path):
                 # from an editor file to an editor file
