@@ -18,7 +18,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import urllib, re, os
+import urllib, re, os, time
 from sgmllib import SGMLParser
 from http import ExtendedHTTPConnection
 
@@ -34,8 +34,15 @@ class Article(SGMLParser):
                  cookie_str=None,
                  https=False,
                  port=None,
+                 dirname=None,
+                 username=None,
+                 password=None,
                  httpauth_username=None,
-                 httpauth_password=None
+                 httpauth_password=None,
+                 cache_time = 30,
+                 # logger is passed as an argument so that Article remains
+                 # an independant class
+                 logger = None 
                  ):
         SGMLParser.__init__(self)
     
@@ -47,13 +54,15 @@ class Article(SGMLParser):
         self.port = port
         self.httpauth_username = httpauth_username
         self.httpauth_password = httpauth_password
+        self.cache_time = cache_time
+        self.logger = logger
                  
         self.content = ""
         self.textarea = False
         self.wpEdittime = 0
         self.wpStarttime = 0
         self.wpEditToken = None
-        self.last_open_time = 0
+        self.last_get = 0
 
         # url patterns        
         self.edit_page = "%s?title=%s&action=edit" % \
@@ -68,6 +77,7 @@ class Article(SGMLParser):
         Called when a textarea is entered.
         """
         self.textarea = True
+        self.content = ""
     
     def start_input(self,attrs):
         """
@@ -101,30 +111,50 @@ class Article(SGMLParser):
         """
         Gets the wiki content (not the whole html page).
         """
-        
-        headers = {"User-agent" : "WikipediaFS"}
-          
-        if self.cookie_str is not None:
-            headers["Cookie"] = self.cookie_str
-              
-        conn = ExtendedHTTPConnection(self.host, self.port, self.https)
 
-        if self.httpauth_username and self.httpauth_password:
-            conn.http_auth(self.httpauth_username, self.httpauth_password)
+        # Do not get article if cache is still ok
+        if int(time.time()) - self.last_get > self.cache_time:       
+            headers = {"User-agent" : "WikipediaFS"}
+            
+            if self.cookie_str is not None:
+                headers["Cookie"] = self.cookie_str
+                
+            conn = ExtendedHTTPConnection(self.host, self.port, self.https)
 
-        conn.add_headers(headers)
-        conn.request(self.edit_page)
-        #logger.info("HTTP GET %s" % self.edit_page)
-        response = conn.getresponse()        
-        
-        # Feeds the SGMLparser
-        self.feed(response.read())
-        conn.close()
+            if self.httpauth_username and self.httpauth_password:
+                conn.http_auth(self.httpauth_username, self.httpauth_password)
+
+            conn.add_headers(headers)
+            conn.request(self.edit_page)
+            #logger.info("HTTP GET %s" % self.edit_page)
+            response = conn.getresponse()
+                   
+            # Log http response
+            if self.logger:
+                self.logger.info("HTTP GET %s" % self.edit_page)        
+            
+            # Feeds the SGMLparser
+            self.feed(response.read())
+            conn.close()
+
+            self.last_get = int(time.time())
+        else:
+            if self.logger:
+                self.logger.debug("Get %s from cache" % self.name)
+
+        # This allows to quickly now from the fs is the article is empty
+        if len(self.content.strip()) == 0:
+            self.is_empty = True
+        else:
+            self.is_empty = False                     
 
         return self.content
               
         
     def set(self, text):
+        if text == self.content: 
+            return # useless to continue further...
+        
         # Looking for a [[Summary:*]]
         regexp = '((\[\[)((s|S)ummary:)(.*)(\]\])(( )*\n)?)'
         summary = re.search(regexp, text)
@@ -163,18 +193,33 @@ class Article(SGMLParser):
         conn.add_headers(headers)
         conn.add_data(params)
         conn.request(self.submit_page)
-        #logger.info("HTTP POST %s" % self.submit_page)
+        
         response = conn.getresponse()
         
-        # Log http response        
-        #if response.status == 302:
-        #    logger.info("Succesful")
-        #elif response.status == 200:
-        #    logger.warning("Problems occured %s\n" % response.read())
-        #else:
-        #    logger.info("%d \n %s " % (response.status,response.read()))
+        # Log http response
+        if self.logger:
+            self.logger.info("HTTP POST %s" % self.submit_page)
+            if response.status == 302:
+                self.logger.info("Succesful")
+            elif response.status == 200:
+                self.logger.error("Problems occured %s\n" % response.read())
+            else:
+                self.logger.info("%d \n %s " % \
+                                    (response.status,response.read()))
 
         conn.close()
+
+        self.content = text
+        
+        # forces the article to be get next time
+        # (wpEdittime and wpStarttime need to be updated)
+        self.last_get = 0
+
+        # This allows to quickly now from the fs is the article is empty
+        if len(self.content.strip()) == 0:
+            self.is_empty = True
+        else:
+            self.is_empty = False            
 
 
 if __name__ == "__main__":

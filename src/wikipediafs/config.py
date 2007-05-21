@@ -32,7 +32,7 @@ class Config:
 <wfs-config>
     <general>
         <!-- Cache time in seconds -->
-        <article-cache-time>300</article-cache-time>
+        <article-cache-time>30</article-cache-time>
     </general>
     <sites>
         <!-- 
@@ -130,7 +130,7 @@ class Config:
         try:
             self.cache_time = val
         except:
-            self.cache_time = 300
+            self.cache_time = 30
 
     def __setDebug(self):
         element = self.__config.getElementsByTagName("debug")
@@ -141,14 +141,14 @@ class Config:
         
         
 if __name__ != "__main__":
-    config = Config()
+    CONFIG = Config()
 else:    
     config_test = """\
 <?xml version="1.0" encoding="UTF-8"?>
 <wfs-config>
     <general>
         <!-- Cache time in seconds -->
-        <article-cache-time>300</article-cache-time>
+        <article-cache-time>30</article-cache-time>
         <debug />
     </general>
     <sites>        
@@ -174,4 +174,4 @@ else:
     print "cache time:", config.cache_time
     print "debug:", config.debug_mode
     for k, v in config.sites.items():
-        print k, v
+        print k, v        

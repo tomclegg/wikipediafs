@@ -1,3 +1,21 @@
+2007-05-21 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Introduced MetaDir (metadir.py).
+
+MetaDir allows to associate one directory with one class.
+Therefore each directory can define its own behaviour in its own class.
+It creates a higher level API so that we do not have do deal with
+inodes and other low level data structures.
+It takes care of editor files which can be a pain to deal with otherwise.
+
+- Added fs.py, the actual logic of the file system, which uses MetaDir.
+
+- Renamed the logger and config global variables to LOGGER and CONFIG resp. in
+order to prevent confusion.
+
+- Set default cache time to 30 seconds instead of 300 seconds. Too big cache
+time may cause edit conflicts with people editing the same article.
+
 2007-05-19 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Added a debug mode option in the config.

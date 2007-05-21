@@ -20,7 +20,7 @@
 
 import logging
 import os, os.path
-from config import config
+from config import CONFIG
 
 conf_dir = os.path.join(os.environ['HOME'], '.wikipediafs')
 file = os.path.join(conf_dir, 'wikipediafs.log')
@@ -29,18 +29,18 @@ file = os.path.join(conf_dir, 'wikipediafs.log')
 if not os.path.exists(conf_dir):
     os.mkdir(conf_dir,0700)
 
-logger = logging.getLogger('wikipediafs')
+LOGGER = logging.getLogger('wikipediafs')
 hdlr = logging.FileHandler(file)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 hdlr.setFormatter(formatter)
-logger.addHandler(hdlr)
+LOGGER.addHandler(hdlr)
 
-if config.debug_mode:
-    logger.setLevel(logging.DEBUG)
+if CONFIG.debug_mode:
+    LOGGER.setLevel(logging.DEBUG)
 else:
-    logger.setLevel(logging.INFO)
+    LOGGER.setLevel(logging.INFO)
 
-# logger.debug('A debug message')
-# logger.info('Some information')
-# logger.warning('A shot across the bows')
-# logger.error('error...')
+# LOGGER.debug('A debug message')
+# LOGGER.info('Some information')
+# LOGGER.warning('A shot across the bows')
+# LOGGER.error('error...')

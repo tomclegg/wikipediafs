@@ -72,7 +72,7 @@ class ExtendedHTTPConnection:
 
         if self.proxy_enabled:
             # the full url is of course needed
-             url = "%s://%s:%d%s" % (proto, self.host, self.port, path)
+            url = "%s://%s:%d%s" % (proto, self.host, self.port, path)
         else:
             url = path
 
