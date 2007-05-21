@@ -1,3 +1,52 @@
+2007-05-21 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Introduced MetaDir (metadir.py).
+
+MetaDir allows to associate one directory with one class.
+Therefore each directory can define its own behaviour in its own class.
+It creates a higher level API so that we do not have do deal with
+inodes and other low level data structures.
+It takes care of editor files which can be a pain to deal with otherwise.
+
+- Added fs.py, the actual logic of the file system, which uses MetaDir.
+
+- Renamed the logger and config global variables to LOGGER and CONFIG resp. in
+order to prevent confusion.
+
+- Set default cache time to 30 seconds instead of 300 seconds. Too big cache
+time may cause edit conflicts with people editing the same article.
+
+- mkdir (wikipedia|wiktionary|wikiquote|wikibooks|wikisource)-lang (e.g.
+mkdir wikipedia-fr) automatically sets a working directory for the concerned
+site from the wikimedia foundation.
+
+- Added subfolder support (yay !). Files must have .mw extension in order to
+distinguish them from directories.
+
+- Readded edit with login support.
+
+- Readded mount.wikipediafs.
+
+2007-05-19 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Added a debug mode option in the config.
+- Set debug logging level if debug mode set in config.
+
+2007-05-16 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed proxy and http auth support.
+
+2007-05-15 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Moved cookie support code to user.py.
+- Created http.py.
+- Added support for httpauth, based on a patch from Johannes Wolter.
+- Added support for https.
+
+2007-05-14 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Rewrote code concerning config file and moved it to config.py.
+
 2007-05-07 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Updated web site (local link to python fuse bindings).

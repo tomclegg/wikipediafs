@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # WikipediaFS
-# Copyright (C) 2005 - 2006 Mathieu Blondel
+# Copyright (C) 2005 - 2007 Mathieu Blondel
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,93 +14,35 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from optparse import OptionParser
-import os, os.path, sys, signal, time
+from sys import exit
 
-MOUNTING_MAX_DELAY = 10
+try:
+    from fuse import FuseError
+except:
+    print "The Python bindings for fuse do not seem to be installed."
+    print "Please install the fuse-python package."
+    exit(1)
+        
+from wikipediafs.fs import WikipediaFS
 
 try:
     from wikipediafs.version import VERSION
 except:
     VERSION = 'development version'
 
-def parseOptions():
-    usage = "usage: %prog [options] mountpoint"
-    parser = OptionParser(usage=usage, version="%prog " + VERSION)
-    parser.add_option("-o", "--options", dest="mount_options",
-                      help = "Mount options",
-                      metavar = "option1=value1,[option2=value2,...]")
-                      
-    (options, args) = parser.parse_args()
 
-    if len(args) == 2 and args[0] == 'none':
-        # when mount.wikipediafs is called with fstab
-        mountpoint = args[1]
-    elif len(args) == 1:
-        # when mount.wikipediafs is called with command line
-        mountpoint = os.path.abspath(args[0])
-    else:
-        parser.error("Wrong arguments or number of arguments!")
+try:
+    server = WikipediaFS(version="%prog " + VERSION,
+                    usage='%prog mountpoint',
+                    dash_s_do='setsingle')
 
-
-    if os.path.ismount(mountpoint):
-        parser.error("%s is mounted already!" % mountpoint)
-
-    if options.mount_options:
-        for option in options.mount_options.split(','):
-            try:
-                k, v = option.split('=', 1)
-                if k == 'home':
-                    os.environ['HOME'] = v
-            except:
-                pass              
-
-    return (mountpoint, options)
+    server.parse(errex=1)
+    server.multithreaded = 0
+    server.main()
+except FuseError, detail:
+    print detail
         
-                
-if __name__ == "__main__":
-    (mountpoint, options) = parseOptions()
-
-    import wikipediafs.WikipediaFS
-    from wikipediafs.logger import logger
-
-    wfs_pid = os.fork()
-
-    if wfs_pid == 0:
-        # this is the child process.
-        child_pid = os.getpid()
-
-        def handlerHUP(signum, frame):
-            os._exit(1)
-    
-        signal.signal(signal.SIGHUP, handlerHUP)
-
-        sys.argv = [] # blank the command-line params for this child
-        wikipediafs.WikipediaFS.start(mountpoint)
-
-    else:
-    # this is the parent process.
-
-        for i in range(MOUNTING_MAX_DELAY):
-
-            if not os.path.ismount(mountpoint):
-                # let's check our child is still alive, without blocking
-                pid, status = os.waitpid(wfs_pid, os.WNOHANG)
-                if not pid == 0: # it died, let's exit
-                    sys.exit(1)
-            else: # success, wfs got mounted
-                break
-
-            time.sleep(1)
-
-        if os.path.ismount(mountpoint):
-            logger.info("WikipediaFS is now mounted.")
-        else:
-            sys.stderr.write("Mount failed!\n")
-            os.kill(wfs_pid, signal.SIGHUP) # send SIGHUP to our child
-            os.waitpid(wfs_pid, 0)
-            sys.exit(3)
