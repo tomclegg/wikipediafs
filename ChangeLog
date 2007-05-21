@@ -25,6 +25,8 @@ distinguish them from directories.
 
 - Readded edit with login support.
 
+- Readded mount.wikipediafs.
+
 2007-05-19 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Added a debug mode option in the config.

@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# WikipediaFS
+# Copyright (C) 2005 - 2007 Mathieu Blondel
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+from sys import exit
+
+try:
+    from fuse import FuseError
+except:
+    print "The Python bindings for fuse do not seem to be installed."
+    print "Please install the fuse-python package."
+    exit(1)
+        
+from wikipediafs.fs import WikipediaFS
+
+try:
+    from wikipediafs.version import VERSION
+except:
+    VERSION = 'development version'
+
+
+try:
+    server = WikipediaFS(version="%prog " + VERSION,
+                    usage='%prog mountpoint',
+                    dash_s_do='setsingle')
+
+    server.parse(errex=1)
+    server.multithreaded = 0
+    server.main()
+except FuseError, detail:
+    print detail
+        
