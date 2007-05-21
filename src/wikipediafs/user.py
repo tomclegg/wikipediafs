@@ -34,8 +34,14 @@ class User:
                  https=False,
                  port=None,
                  httpauth_username=None,
-                 httpauth_password=None
+                 httpauth_password=None,
+                 logger = None,
+                 # Not actually needed, just here for compatibility
+                 name=None,
+                 cookie_str=None,
+                 dirname=None                 
                  ):
+        logger.info("%s %s" % (username, password))
 
         self.username = username
         self.password = password
@@ -45,6 +51,7 @@ class User:
         self.port = port
         self.httpauth_username = httpauth_username
         self.httpauth_password = httpauth_password
+        self.logger = logger
 
         # url pattern
         self.login_page = "%s?title=Special:Userlogin" % self.basename
@@ -87,9 +94,15 @@ class User:
         
         if len(cookie_list) == 4:
             cookie_list.pop()
-            #logger.info("; ".join(cookie_list))
+            if self.logger:
+                self.logger.info("Logged in successfully with username %s" % \
+                                 self.username)
+                #self.logger.info("; ".join(cookie_list))
             return "; ".join(cookie_list)
         else:
+            if self.logger:
+                self.logger.warning("Could not log in with username %s" % \
+                                    self.username)
             return None
 
                

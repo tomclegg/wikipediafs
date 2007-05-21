@@ -34,15 +34,16 @@ class Article(SGMLParser):
                  cookie_str=None,
                  https=False,
                  port=None,
-                 dirname=None,
-                 username=None,
-                 password=None,
                  httpauth_username=None,
                  httpauth_password=None,
                  cache_time = 30,
                  # logger is passed as an argument so that Article remains
                  # an independant class
-                 logger = None 
+                 logger = None,
+                 # Not actually needed, just here for compatibility
+                 dirname=None,
+                 username=None,
+                 password=None,
                  ):
         SGMLParser.__init__(self)
     

@@ -22,12 +22,13 @@ import os.path, re
 from metadir import MetaDir
 from config import CONFIG
 from article import Article
+from user import User
 from logger import LOGGER
 
 class ArticleDir:
     def __init__(self, fs, config):
         self.fs = fs
-        self.config = config
+        self.config = config        
 
         self.files = {}
         self.dirs = {}
@@ -68,12 +69,22 @@ class ArticleDir:
         else:
             return False
 
+    def set_cookie_string(self):
+        if not self.config.has_key("cookie_str"):
+            if self.config["username"] is not None and \
+               self.config["password"] is not None:
+                user = User(logger=LOGGER, **self.config)
+                cookie_str = user.getCookieString()
+                self.config["cookie_str"] = cookie_str
+
     def read_file(self, path):
         file_name = self.get_article_file_name(path)
         full_name = self.get_article_full_name(path)
         if self.files.has_key(file_name):
             art = self.files[file_name]
         else:
+            self.set_cookie_string()
+            
             art = Article(full_name[0:-3], # removes .mw from the name
                           cache_time=CONFIG.cache_time,
                           logger = LOGGER,

@@ -20,7 +20,10 @@ time may cause edit conflicts with people editing the same article.
 mkdir wikipedia-fr) automatically sets a working directory for the concerned
 site from the wikimedia foundation.
 
-- Added subfolder support (yay !).
+- Added subfolder support (yay !). Files must have .mw extension in order to
+distinguish them from directories.
+
+- Readded edit with login support.
 
 2007-05-19 Mathieu Blondel <mblondel@users.sourceforge.net>
 
