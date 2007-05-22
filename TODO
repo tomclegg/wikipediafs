@@ -1,9 +1,9 @@
 # TODO
 
-- "watch" released articles when being a registered user
-- allow normal/minor edit switch when editing and default value in config.xml
-- manage edit conflicts
+- allow normal/minor edit switch
+- manage edit conflicts (e.g. move conflicts to an edit_conflicts/ directory)
 - allow offline edition (a stack of articles the user may release whenever he
 wants)
-- allow article redirection
+- link directory
+- download / upload files / pictures
 
