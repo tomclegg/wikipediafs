@@ -1,8 +1,7 @@
 <html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8;"/>
-<title>WikipediaFS, voir et éditer des articles Wikipedia comme s'ils étaient
- de vrais fichiers</title>
+<title>WikipediaFS, lire et modifier les articles de Wikipédia comme s'ils étaient de véritables fichiers files</title>
 <style>
 body { background-color: white; }
 h1, h2, h3 { font-family: sans; color: #000000; }
@@ -10,59 +9,79 @@ h1, h2, h3 { font-family: sans; color: #000000; }
 </head>
 <body>
 
-<p><a href="index.htm">English page</a></p>
+<p><a href="index.htm" title="English page">English</a> - <a href="index_ja.htm" title="日本語">日本語</a></p>
 
 <h1>WikipediaFS</h1>
 
-<p><em>Voir et éditer des articles Wikipedia comme s'ils étaient
- de vrais fichiers.</em></p>
+<p><strong>Lire et modifier les articles de Wikipédia comme s'ils
+étaient de véritables fichiers !</strong></p>
 
-<p>WikipediaFS est un système de fichiers virtuel montable qui permet de voir et
-éditer des articles <a href="http://www.wikipedia.org">Wikipedia</a> (ou <a
+<p>WikipediaFS est un système de fichiers montable qui permet de lire et
+éditer des articles de <a href="http://www.wikipedia.org">Wikipedia</a> (ou
+de tout <a
 href="http://www.mediawiki.org/wiki/MediaWiki">Mediawiki</a>) comme s'ils
-étaient  de vrais fichiers.</p>
+étaient de vrais fichiers.</p>
 
-<p>Il est ainsi possibile d'utiliser un vrai éditeur de texte pour voir et
-modifier des articles.</p>
+<p>Il est donc possible de <strong>lire et modifier des articles avec
+son éditeur de texte favori</strong>. Les éditeurs sont plus
+pratiques qu'un simple navigateur pour modifier des gros textes et ont des
+fonctions intéressantes comme la coloration syntaxique et la correction
+orthographique.</p>
 
-C'est un <a href="http://www.gnu.org/philosophy/free-sw.html">logiciel
-libre</a>, publié sous <a href="http://www.gnu.org/copyleft/gpl.html">GNU
-General Public License</a> et fourni sans aucune garantie.</p>
+<p><img src="screenshot.png" alt="WikipediaFS using Kate" /><br />
+<em>Ouvrez un fichier, modifiez-le, sauvegardez-le ! C'est bon, Wikipedia a
+été mis à jour pour vous !</em></p>
 
-<h2>Caractéristiques</h2>
+<p>Une <strong>utilisation avancée</strong> de WikipediaFS inclut notamment le
+développement facilité de scripts et de <em>bots</em>. En effet, les programmes
+ont simplement à se soucier des fichiers : c'est WikipediaFS qui prend en
+charge la couche HTTP. Par exemple, il serait possible d'utiliser WikipediaFS
+pour réaliser une migration de contenu massive entre un site existant et un
+Mediawiki.</p>
+
+<p>WikipediaFS est un <a
+href="http://www.gnu.org/philosophy/free-sw.html">logiciel libre</a>,
+publié sous licence <a
+href="http://www.gnu.org/copyleft/gpl.html">GNU
+General Public License</a> et fourni sans garantie de toute sorte.</p>
+
+<h2>Fonctionnalités</h2>
 
 <ul>
-<li>Possibilité de lire et éditer des articles.</li>
-<li>Configuration (cache time, sites).</li>
-<li>Possibilité d'éditer avec son login.</li>
+<li>Lire et éditer des articles, sous-pages inclues.</li>
+<li>Configuration : ajoutez votre propre Mediawiki.</li>
+<li>Édition avec son login.</li>
+<li>HTTPS, authentification HTTP, proxy.</li>
 </ul>
+
+<p>WikipediaFS devrait fonctionner avec Linux, FreeBSD et Mac OS X.</p>
 
 <h2>Téléchargement</h2>
 
-<p><strong>Dernière version :</strong> 0.2</p>
+<p><strong>Dernière version :</strong> 0.3</p>
 
 <p><a
 href="http://sourceforge.net/project/showfiles.php?group_id=133079">Zone
 de téléchargement</a></p>
 
-<p>Voir le fichier <a href="README.txt">README</a> et la page de <a
-href="mount.wikipediafs.htm">manuel</a>.</p>
+<p>Voir aussi le fichier <a href="README.txt">README</a> ainsi que la <a
+href="mount.wikipediafs.htm">page de manuel</a>.</p>
 
-<p>Vous pouvez télécharger les bindings python de fuse <a
-href="python-fuse-2.5.tar.bz2">ici</a>.
-
-<h2>Liens relatifs</h2>
+<h2>Liens connexes</h2>
 
 <ul>
 <li><a href="http://sourceforge.net/projects/wikipediafs/">WikipediaFS project
 homepage at Sourceforge</a> (mailing-lists, bug tracker...).</li>
-<li><a href="http://svn.sourceforge.net/viewcvs.cgi/wikipediafs/">Subversion
+<li><a href="http://sourceforge.net/svn/?group_id=133079">Subversion
 repository</a>.</li>
+<li><a href="http://svn.sourceforge.net/viewcvs.cgi/wikipediafs/">Subversion
+web interface</a>.</li>
+<li>fuse-python <a href="http://fuse.sourceforge.net/wiki/index.php/FusePython">web site</a></li>
 </ul>
 
 <hr />
-<p>Copyrigth 2005 - 2006 Mathieu Blondel (mblondel !AT! users *DOT*
-sourceforge *DOT* net). Hébergement offert par <a
+<p>Copyrigth 2005 - 2007 Mathieu Blondel (mblondel !AT! users *DOT*
+sourceforge *DOT* net). Hébergement du projet par <a
 href="http://www.sourceforge.net">Sourceforge</a>.</p>
 
 </body>
