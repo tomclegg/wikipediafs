@@ -18,6 +18,8 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import os
+import sys
 from sys import exit
 
 try:
@@ -26,15 +28,38 @@ except:
     print "The Python bindings for fuse do not seem to be installed."
     print "Please install the fuse-python package."
     exit(1)
-        
+    
+# When WFS is mounted with fstab, HOME is not defined...
+# We have to deal with this since we need HOME for the config and the log.
+if not os.environ.has_key("HOME"):
+    last = len(sys.argv) - 1
+    mountoptions = sys.argv[last]
+    arr = []
+    home = None
+    for o in mountoptions.split(","):
+        if o[0:5] == "home=":
+            spl = o.split("=")
+        if len(spl) == 2:
+            home = spl[1]
+        elif o != "noauto" and o != "user" and o != "auto" and o != "nouser":
+            arr.append(o)
+    sys.argv[last] = ','.join(arr)
+
+    if home:    
+        os.environ["HOME"] = home
+    elif os.environ.has_key("USER"):
+        if os.environ["USER"] == "root":
+            os.environ["HOME"] = "/root/"
+        else:
+            os.environ["HOME"] = "/home/%s/" % os.environ["USER"]
+
 from wikipediafs.fs import WikipediaFS
 
 try:
     from wikipediafs.version import VERSION
 except:
     VERSION = 'development version'
-
-
+   
 try:
     server = WikipediaFS(version="%prog " + VERSION,
                     usage='%prog mountpoint',

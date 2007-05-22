@@ -1,3 +1,8 @@
+2007-05-22 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Updated README and manpage.
+- Fixed mount from fstab.
+
 2007-05-21 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Introduced MetaDir (metadir.py).

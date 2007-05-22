@@ -6,9 +6,9 @@ View and edit Wikipedia articles as if they were real files.
 Requirements
 ------------
 
-Python 
-Fuse
-Python-Fuse
+Python       2.4    http://www.python.org
+Fuse         2.6.3  http://fuse.sourceforge.net
+Fuse-python  0.2    http://fuse.sourceforge.net/wiki/index.php/FusePython
 
 Install
 -------
@@ -46,7 +46,7 @@ Try this:
 
 ** Other
 
-The FAQ available on the official Fuse website is worth reading.
+The FAQ available on the official Fuse website is probably worth reading.
 URL : http://fuse.sourceforge.net/
 
 License
