@@ -169,7 +169,9 @@ class Root:
             site = match.group(1)
             config = {
                 "host": "%s.%s.org" % (lang, site),
-                "basename" : "/w/index.php"
+                "basename" : "/w/index.php",
+                "username" : None,
+                "password" : None
             }
             self.dirs[basename] = True
             self.fs.set_dir("/" + basename, ArticleDir(self.fs, config))
