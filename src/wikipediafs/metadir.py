@@ -97,7 +97,7 @@ class MetaDir(Fuse):
 
     def is_valid_file(self, path):
         name = os.path.basename(path)
-        if len(name):            
+        if len(name) > 0:            
             if name[0] == ".":# hidden file
                 return False
             elif name[-4:] == ".swp": # vi swap file
