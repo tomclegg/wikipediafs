@@ -98,6 +98,8 @@ class ArticleDir:
         if self.files.has_key(file_name):
             art = self.files[file_name]
         else:
+            self.set_cookie_string()
+            
             art = Article(full_name[0:-3],
                           cache_time=CONFIG.cache_time,
                           logger = LOGGER,
