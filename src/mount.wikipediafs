@@ -39,8 +39,8 @@ if not os.environ.has_key("HOME"):
     for o in mountoptions.split(","):
         if o[0:5] == "home=":
             spl = o.split("=")
-        if len(spl) == 2:
-            home = spl[1]
+            if len(spl) == 2:
+                home = spl[1]
         elif o != "noauto" and o != "user" and o != "auto" and o != "nouser":
             arr.append(o)
     sys.argv[last] = ','.join(arr)
@@ -62,8 +62,8 @@ except:
    
 try:
     server = WikipediaFS(version="%prog " + VERSION,
-                    usage='%prog mountpoint',
-                    dash_s_do='setsingle')
+                         usage='%prog mountpoint',
+                         dash_s_do='undef')
 
     server.parse(errex=1)
     server.multithreaded = 0
