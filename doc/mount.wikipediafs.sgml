@@ -65,7 +65,7 @@ they were real files. <command>&manpackage;</command> mounts a WikipediaFS
 filesystem.
     </para>
     
-    <para>To connect through an HTTP proxy, it possible to use
+    <para>To connect through an HTTP proxy, it is possible to use
 the $http_proxy environment variable.</para>
     
   </refsect1>
