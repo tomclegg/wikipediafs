@@ -1,0 +1,21 @@
+=== WikipediaFS 0.3 ===
+
+- Compatible with new fuse-python API
+- Rewritten from scratch
+- Significant reliability and performances improvements
+- HTTPS, HTTP authentication support (in addition to HTTP and proxy)
+- Subpages support
+- Automatically make directories for sites from the Wikimedia foundation
+- Files now need the ".mw" extension !
+
+=== WikipediaFS 0.2 ===
+
+- $http_proxy support
+- bug fix
+
+=== WikipediaFS 0.1 ===
+
+- edit and view articles
+- edit with one's username
+- user configuration
+- logging system
