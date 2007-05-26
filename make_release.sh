@@ -23,7 +23,7 @@ echo "Creating man page"
 docbook-to-man doc/mount.wikipediafs.sgml > doc/mount.wikipediafs.1
 man2html -r doc/mount.wikipediafs.1 | sed -e "s/Content-type: text\/html//" \
     > doc/mount.wikipediafs.htm
-gzip doc/mount.wikipediafs.1
+gzip -9 doc/mount.wikipediafs.1
 
 echo "Uploading site..."
 cp README README.txt

@@ -16,7 +16,7 @@ manpage.1: manpage.sgml
   <!ENTITY mandate      "<date>Thu, 20 Jun 2006 13:16:17 -0700</date>">
   <!-- SECTION should be 1-8, maybe with subsection. Other parameters are
        allowed: see man(7), man(1). -->
-  <!ENTITY mansection   "<manvolnum>8</manvolnum>">
+  <!ENTITY mansection   "<manvolnum>1</manvolnum>">
   <!ENTITY manemail     "<email>mblondel@users.sourceforge.net</email>">
   <!ENTITY manusername  "sdffsd">
   <!ENTITY manucpackage "<refentrytitle>MOUNT.WIKIPEDIAFS</refentrytitle>">

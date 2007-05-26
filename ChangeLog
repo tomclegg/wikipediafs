@@ -3,6 +3,8 @@
 - Fixed a little problem in article.py. Spaces in article name must be replaced
 with underscores.
 
+- Section of manpage should be 1, not 8. gzip man page with -9 option.
+
 2007-05-24 Csaba Henk <csaba.henk@creo.hu>
 
 - Fixed misindentation and left the '-s' option unhandled in mount.wikipediafs.
