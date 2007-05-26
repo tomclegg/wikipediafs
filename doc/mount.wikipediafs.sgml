@@ -93,7 +93,8 @@ the $http_proxy environment variable.</para>
               <term>host*</term>
               <listitem>
                   <para>
-                      Is the host of the site.
+                      Is the host of the site. For Wikipedia, it will be
+                      lang.wikipedia.org
                   </para>
               </listitem>
           </varlistentry>   
