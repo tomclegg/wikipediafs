@@ -26,7 +26,7 @@ try:
     from fuse import FuseError
 except:
     print "The Python bindings for fuse do not seem to be installed."
-    print "Please install the fuse-python package."
+    print "Please install fuse-python 0.2 or later."
     exit(1)
     
 # When WFS is mounted with fstab, HOME is not defined...
