@@ -1,3 +1,8 @@
+2007-05-26 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Fixed a little problem in article.py. Spaces in article name must be replaced
+with underscores.
+
 2007-05-24 Csaba Henk <csaba.henk@creo.hu>
 
 - Fixed misindentation and left the '-s' option unhandled in mount.wikipediafs.

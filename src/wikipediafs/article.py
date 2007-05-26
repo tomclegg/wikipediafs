@@ -45,8 +45,10 @@ class Article(SGMLParser):
                  password=None,
                  ):
         SGMLParser.__init__(self)
-    
-        self.name = name
+
+        # Mediawiki replaces spaces with underscores
+        # because an URL cannot contain spaces        
+        self.name = name.replace(" ", "_")
         self.host = host
         self.basename = basename
         self.cookie_str = cookie_str
