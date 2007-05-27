@@ -5,6 +5,8 @@ characters like &.
 
 - setup.py: make the man page optional in the install process.
 
+=== WikipediaFS 0.3 ===
+
 2007-05-26 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Fixed a little problem in article.py. Spaces in article name must be replaced
