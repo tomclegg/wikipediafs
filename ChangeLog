@@ -1,9 +1,10 @@
-2007-05-26 Mathieu Blondel <mblondel@users.sourceforge.net>
+2007-05-2è Mathieu Blondel <mblondel@users.sourceforge.net>
 
-- article.py: encode urls. This fixes the problem with articles having special
-characters like &.
+- Fixed the problem with articles having special characters like & (article.py).
 
-- setup.py: make the man page optional in the install process.
+- Made the man page optional in the install process (setup.py).
+
+- Check invalid characters in article name. (fs.py)
 
 === WikipediaFS 0.3 ===
 

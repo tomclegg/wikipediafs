@@ -42,6 +42,11 @@ class ArticleDir:
 
     def is_valid_file(self, path):
         file_name = self.get_article_file_name(path)
+
+        for forbidden_char in ('#', '<', '>', '[', ']', '|', '{', '}'):
+            if file_name.count(forbidden_char) > 0:
+                return False
+        
         if file_name[-3:] == ".mw":
             return True
         else:
