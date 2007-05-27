@@ -1,4 +1,4 @@
-2007-05-2è Mathieu Blondel <mblondel@users.sourceforge.net>
+2007-05-27 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Fixed the problem with articles having special characters like & (article.py).
 
