@@ -66,13 +66,15 @@ class Article(SGMLParser):
         self.wpEditToken = None
         self.last_get = 0
 
-        # url patterns        
-        self.edit_page = "%s?title=%s&action=edit" % \
-                            (self.basename, self.name)
+        # url patterns
+        title = urllib.urlencode({"title" : self.name})
+                
+        self.edit_page = "%s?%s&action=edit" % \
+                            (self.basename, title)
                             # basename must include a leading /
         
-        self.submit_page = "%s?title=%s&action=submit" % \
-                            (self.basename, self.name)                          
+        self.submit_page = "%s?%s&action=submit" % \
+                            (self.basename, title)                          
 
     def start_textarea(self,attrs):
         """

@@ -1,5 +1,10 @@
 2007-05-26 Mathieu Blondel <mblondel@users.sourceforge.net>
 
+- article.py: encode urls. This fixes the problem with articles having special
+characters like &.
+
+2007-05-26 Mathieu Blondel <mblondel@users.sourceforge.net>
+
 - Fixed a little problem in article.py. Spaces in article name must be replaced
 with underscores.
 
