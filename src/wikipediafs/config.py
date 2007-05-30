@@ -123,13 +123,11 @@ class Config:
 
 
     def __setCacheTime(self):
-        element = self.__config.getElementsByTagName("article-cache-time")[0]
-        first_child = element.firstChild
-        val = int(str(first_child.nodeValue))
-        try:
-            self.cache_time = val
-        except:
+        element = self.__config.getElementsByTagName("article-cache-time")
+        if element.length == 0:
             self.cache_time = 30
+        else:
+            self.cache_time = int(str(element[0].firstChild.nodeValue))
 
     def __setDebug(self):
         element = self.__config.getElementsByTagName("debug")
