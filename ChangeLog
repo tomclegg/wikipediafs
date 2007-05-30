@@ -1,6 +1,6 @@
 2007-05-30 Mathieu Blondel <mblondel@users.sourceforge.net>
 
-- Set default cache timeif article-cache-time is not present in config.
+- Set default cache time if article-cache-time is not present in config.
 
 2007-05-27 Mathieu Blondel <mblondel@users.sourceforge.net>
 
