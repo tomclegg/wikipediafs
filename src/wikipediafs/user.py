@@ -32,6 +32,7 @@ class User:
                  basename,
                  https=False,
                  port=None,
+                 domain=None,
                  httpauth_username=None,
                  httpauth_password=None,
                  logger = None,
@@ -48,6 +49,7 @@ class User:
         self.basename = basename
         self.https = https
         self.port = port
+        self.domain = domain
         self.httpauth_username = httpauth_username
         self.httpauth_password = httpauth_password
         self.logger = logger
@@ -64,6 +66,9 @@ class User:
 
         params = {"wpName":self.username, "wpPassword":self.password,
                   "wpLoginattempt":"Identification", "wpRemember":"1"}
+
+        if self.domain:
+            params["wpDomain"] = self.domain
                 
         params = urllib.urlencode(params)
         

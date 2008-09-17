@@ -41,6 +41,7 @@ class Article(SGMLParser):
                  logger = None,
                  # Not actually needed, just here for compatibility
                  dirname=None,
+                 domain=None,
                  username=None,
                  password=None,
                  ):

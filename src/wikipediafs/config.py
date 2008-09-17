@@ -41,7 +41,7 @@ class Config:
             <host>fr.wikipedia.org</host>
             <basename>/w/index.php</basename>
         </site>
-        And another one with all possible informations:
+        And another one with all possible options:
         <site>
             <dirname>wikipedia-fr</dirname>
             <host>fr.wikipedia.org</host>
@@ -52,6 +52,7 @@ class Config:
             <https />
             <httpauth_username>Username</httpauth_username>
             <httpauth_password>Password</httpauth_password>
+            <domain>DOMAIN (if using LDAP/AD Authentication extension)</domain>
         </site>
         -->        
         <!--
@@ -108,7 +109,7 @@ class Config:
         for site in sites:
              dic = {}
              for ele in ("dirname", "host", "basename", "username",
-             "password", "https", "port", "httpauth_username",
+             "password", "https", "port", "domain", "httpauth_username",
              "httpauth_password"):
                 node = site.getElementsByTagName(ele)
                 if node.length == 1:

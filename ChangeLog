@@ -1,3 +1,9 @@
+2008-09-17 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Added a "domain" option in the config file in order to add support
+for LDAP/AD authentication. Patch by Matthieu Moy and Hannes Hörl.
+Fixes #1745542.
+
 2007-05-30 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Set default cache time if article-cache-time is not present in config.
