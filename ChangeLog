@@ -1,3 +1,7 @@
+2009-03-27 Mathieu Blondel <mblondel@users.sourceforge.net>
+
+- Made logging more flexible (user.py).
+
 2008-09-17 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Added a "domain" option in the config file in order to add support

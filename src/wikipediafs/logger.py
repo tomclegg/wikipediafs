@@ -43,3 +43,7 @@ else:
 # LOGGER.info('Some information')
 # LOGGER.warning('A shot across the bows')
 # LOGGER.error('error...')
+
+def printlog(loggerobj, logtype, logmsg):
+    if loggerobj:
+        getattr(loggerobj, logtype)(logmsg)

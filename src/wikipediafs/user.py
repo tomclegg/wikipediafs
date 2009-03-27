@@ -19,6 +19,7 @@
 
 import urllib, re
 from http import ExtendedHTTPConnection
+from logger import printlog
 
 class User:
     """
@@ -41,7 +42,6 @@ class User:
                  cookie_str=None,
                  dirname=None                 
                  ):
-        logger.info("%s %s" % (username, password))
 
         self.username = username
         self.password = password
@@ -95,33 +95,52 @@ class User:
                 cookie_list.append(it_matches.group(1))
 
         conn.close()
-        
+       
+        printlog(self.logger, "debug", "cookie_list:")
+        printlog(self.logger, "debug", cookie_list)
+
         if len(cookie_list) == 4:
             cookie_list.pop()
-            if self.logger:
-                self.logger.info("Logged in successfully with username %s" % \
-                                 self.username)
+            printlog(self.logger, "info",
+                     "Logged in successfully with username %s" % self.username)
                 #self.logger.info("; ".join(cookie_list))
             return "; ".join(cookie_list)
         else:
-            if self.logger:
-                self.logger.warning("Could not log in with username %s" % \
-                                    self.username)
+            printlog(self.logger, "warning",
+                     "Could not log in with username %s" % self.username)
             return None
 
                
 if __name__ == "__main__":
     import sys
+    import getpass
+    import logging
 
-    params = {
-        "host" : "www.mblondel.org",
-        "basename" : "/mediawiki/index.php",
-        "https" : True
-    }
-
-    if(len(sys.argv) != 3):
-        print "python user.py username password"
+    if len(sys.argv) < 4:
+        print "python user.py host urlbase username "
     else:
-        user = User(sys.argv[1], sys.argv[2], **params)
-        print user.getCookieString()
+        if len(sys.argv) == 4:
+            https = False
+        else:
+            https = True
+
+        logger = logging.getLogger("mydebuglogger")
+        logger.setLevel(logging.DEBUG)
+        hdlr = logging.StreamHandler()
+        hdlr.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+        hdlr.setFormatter(formatter)
+        logger.addHandler(hdlr)
+
+        params = {
+            "host" : sys.argv[1], # e.g. www.mblondel.org
+            "basename" : sys.argv[2], # e.g. /mediawiki/index.php
+            "https" : https,
+            "logger": logger
+        }
+
+        password = getpass.getpass()
+
+        user = User(sys.argv[3], password, **params)
+        user.getCookieString()
         
