@@ -32,6 +32,7 @@ class Config:
     <general>
         <!-- Cache time in seconds -->
         <article-cache-time>30</article-cache-time>
+        <login-cache-time>7200</login-cache-time>
     </general>
     <sites>
         <!-- 
@@ -85,7 +86,7 @@ class Config:
         else:
             self.__config = minidom.parseString(config_str).documentElement
                             
-        self.__setCacheTime()
+        self.__setCacheTimes()
 
         self.__setDebug()
             
@@ -123,12 +124,17 @@ class Config:
              self.sites[dic["dirname"]] = dic
 
 
-    def __setCacheTime(self):
+    def __setCacheTimes(self):
         element = self.__config.getElementsByTagName("article-cache-time")
         if element.length == 0:
             self.cache_time = 30
         else:
             self.cache_time = int(str(element[0].firstChild.nodeValue))
+        element = self.__config.getElementsByTagName("login-cache-time")
+        if element.length == 0:
+            self.login_cache_time = 7200
+        else:
+            self.login_cache_time = int(str(element[0].firstChild.nodeValue))
 
     def __setDebug(self):
         element = self.__config.getElementsByTagName("debug")
@@ -147,6 +153,7 @@ else:
     <general>
         <!-- Cache time in seconds -->
         <article-cache-time>30</article-cache-time>
+        <login-cache-time>7200</login-cache-time>
         <debug />
     </general>
     <sites>        

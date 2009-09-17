@@ -132,6 +132,7 @@ class MetaDir(Fuse):
             st.st_mode = stat.S_IFREG | d.mode(path)
             st.st_nlink = 1
             st.st_size = d.size(path)
+            st.st_mtime = d.mtime(path)
         else:
             return -errno.ENOENT # No such file or directory
         return st
@@ -169,6 +170,8 @@ class MetaDir(Fuse):
             # We also need to check if it is a valid file for the fs
             if dir(d).count("is_valid_file") == 1 and not d.is_valid_file(path):
                 return -errno.EACCES # Permission denied
+        else:
+            return -errno.EACCES # Permission denied
         
         self.get_file_buf(path)
         
@@ -218,27 +221,54 @@ class MetaDir(Fuse):
         buf.write(txt)
         return len(txt)
 
-    def release(self, path, flags):
+
+    def fsync(self, path, isfsyncfile = 0):
+        LOGGER.info("Fsync %s %s" % (path, isfsyncfile))
+        return self.flush (path, 0)
+
+    def flush(self, path, flags = 0):
+        # Did we succeed?
+        success = True
+
         # Called to close the file
-        LOGGER.debug("release %s %d" % (path, flags))        
+        LOGGER.debug("flush %s %x" % (path, flags))        
 
         if self.open_mode == self.WRITE and self.is_valid_file(path):
             # for valid files
             buf = self.get_file_buf(path)
             d = self.get_dir(path)
-            d.write_to(path, buf.getvalue())
+            success = d.write_to(path, buf.getvalue())
+            LOGGER.debug("flush: success: %d\n" % (success));
+            if success == False:
+                LOGGER.debug("flush: Returning\n" % (-errno.EIO));
+                return -errno.EIO
+
+        return None
+
+    def release(self, path, flags):
+        # Called to close the file
+        LOGGER.debug("release %s %x" % (path, flags))        
+
+        # Release can not return errors, but try anyhow because we have no other choices.
+        # XXX: Is the flush called reliably enough to do this there?
+        if self.open_mode == self.WRITE and self.is_valid_file(path):
+            # for valid files
+            buf = self.get_file_buf(path)
+            d = self.get_dir(path)
+            success = d.write_to(path, buf.getvalue())
+            LOGGER.debug("release: success: %d\n" % (success));
 
         if self.is_valid_file(path):
             self.remove_file_buf(path) # Do not keep buffer in memory...
 
-        self.open_mode = None   
-        
+        self.open_mode = None
+
         return None
 
     def mkdir(self, path, mode):
-        LOGGER.debug("mkdir %s %d" % (path, mode))
+        LOGGER.debug("mkdir %s %x" % (path, mode))
         d = self.get_dir(path)
-        
+
         if dir(d).count("mkdir") == 0:
             return -errno.EACCES # Permission denied
         else:
@@ -291,10 +321,12 @@ class MetaDir(Fuse):
         elif not self.is_valid_file(path):
             if self.is_valid_file(path1) and d.is_file(path1):
                 # from an editor file to a valid file
-                buf = self.get_file_buf(path)                
-                d.write_to(path1, buf.getvalue())
+                buf = self.get_file_buf(path)
+                ret = d.write_to(path1, buf.getvalue())
                 self.open_mode = None
                 self.remove_file_buf(path)
+                if ret == False:
+                    return -errno.EIO
             elif not self.is_valid_file(path):
                 # from an editor file to an editor file
                 # TODO
@@ -317,10 +349,6 @@ class MetaDir(Fuse):
     def chown(self, path, user, group):
         LOGGER.debug("chown %s %s %s" % (path,user,group))
         return None
-
-    def fsync(self, path, isfsyncfile):
-        LOGGER.info("Fsync %s %s" % (path, isfsyncfile))
-        return 0        
     
 if __name__ == "__main__":
     class Hello:

@@ -17,7 +17,7 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import os.path, re
+import os.path, re, time
 from metadir import MetaDir
 from config import CONFIG
 from article import Article
@@ -27,7 +27,8 @@ from logger import LOGGER
 class ArticleDir:
     def __init__(self, fs, config):
         self.fs = fs
-        self.config = config        
+        self.config = config
+        self.login_time = 0
 
         self.files = {}
         self.dirs = {}
@@ -73,52 +74,68 @@ class ArticleDir:
         else:
             return False
 
-    def set_cookie_string(self):
-        if not self.config.has_key("cookie_str"):
+    def set_cookie_string(self, force):
+        if force or not self.config.has_key("cookie_str"):
             if self.config["username"] is not None and \
                self.config["password"] is not None:
                 user = User(logger=LOGGER, **self.config)
                 cookie_str = user.getCookieString()
                 self.config["cookie_str"] = cookie_str
 
-    def read_file(self, path):
+            self.login_time = time.time()
+
+    def get_art(self, path):
         file_name = self.get_article_file_name(path)
         full_name = self.get_article_full_name(path)
-        if self.files.has_key(file_name):
-            art = self.files[file_name]
+
+        if int(time.time()) - self.login_time > CONFIG.login_cache_time:
+            self.set_cookie_string(1)
         else:
-            self.set_cookie_string()
-            
-            art = Article(full_name[0:-3], # removes .mw from the name
-                          cache_time=CONFIG.cache_time,
-                          logger = LOGGER,
-                          **self.config)
-            txt = art.get()
-            self.files[file_name] = art
-        return art.get()
+            if self.files.has_key(file_name):
+                return self.files[file_name]
+            else:
+                self.set_cookie_string(0)
+
+        art = Article(full_name[0:-3], # removes .mw from the name
+                      cache_time=CONFIG.cache_time,
+                      logger = LOGGER,
+                      **self.config)
+        self.files[file_name] = art
+
+        return art
+
+    def read_file(self, path):
+        art = self.get_art(path)
+        txt = art.get()
+        return txt
 
     def write_to(self, path, txt):
-        file_name = self.get_article_file_name(path)
-        full_name = self.get_article_full_name(path)
-        if self.files.has_key(file_name):
-            art = self.files[file_name]
-        else:
-            self.set_cookie_string()
-            
-            art = Article(full_name[0:-3],
-                          cache_time=CONFIG.cache_time,
-                          logger = LOGGER,
-                          **self.config)
-            self.files[file_name] = art
-        art.set(txt)
+        art = self.get_art(path);
+        return art.set(txt)
 
     def size(self, path):
+        LOGGER.debug("FSdir size %s" % (path))
         return len(self.read_file(path))
+
+    def mtime(self, path):
+        art = self.get_art(path)
+        # Do a get here just so we have a current Edittime.
+        art.get()
+        tmp = art.wpEdittime
+        t = time.mktime((int(tmp[0:4]), int(tmp[4:6]), int(tmp[6:8]), int(tmp[8:10]), int(tmp[10:12]), int(tmp[12:21]), 0, 0, -1))
+        if time.daylight:
+            t -= time.altzone
+        else:
+            t -= time.timezone
+
+        return t
                     
     def mode(self, path):
+        LOGGER.debug("FSdir mode %s" % (path))
         return 0755
                  
     def unlink(self, path):
+        LOGGER.debug("FSdir unlink %s" % (path))
         file_name = self.get_article_file_name(path)
         if self.files.has_key(file_name):
             self.files.pop(file_name)
@@ -127,6 +144,7 @@ class ArticleDir:
             return False
                             
     def mkdir(self, path):
+        LOGGER.debug("FSdir mkdir %s" % (path))
         name = self.get_article_file_name(path)
         self.dirs[name] = True        
         self.fs.set_dir(path, ArticleDir(self.fs, self.config))

@@ -119,6 +119,7 @@ class Article(SGMLParser):
 
         # Do not get article if cache is still ok
         if int(time.time()) - self.last_get > self.cache_time:       
+            self.logger.debug("pre-GET wpStarttime: '%s', wpEdittime: '%s', cookies: '%s', time diff: %d\n", self.wpEdittime, self.wpStarttime, self.cookie_str, int(time.time()) - self.last_get)
             headers = {"User-agent" : "WikipediaFS"}
             
             if self.cookie_str is not None:
@@ -143,6 +144,7 @@ class Article(SGMLParser):
             conn.close()
 
             self.last_get = int(time.time())
+            self.logger.debug("post-GET wpStarttime: '%s', wpEdittime: '%s', cookies: '%s', time diff: %d\n", self.wpEdittime, self.wpStarttime, self.cookie_str, int(time.time()) - self.last_get)
         else:
             if self.logger:
                 self.logger.debug("Get %s from cache" % self.name)
@@ -158,7 +160,9 @@ class Article(SGMLParser):
         
     def set(self, text):
         if text == self.content: 
-            return # useless to continue further...
+            return True # useless to continue further...
+
+        self.logger.debug("POST wpStarttime: '%s', wpEdittime: '%s', cookies: '%s', time diff: %d\n", self.wpEdittime, self.wpStarttime, self.cookie_str, int(time.time()) - self.last_get)
         
         # Looking for a [[Summary:*]]
         regexp = '((\[\[)((s|S)ummary:)(.*)(\]\])(( )*\n)?)'
@@ -208,6 +212,8 @@ class Article(SGMLParser):
                 self.logger.info("Succesful")
             elif response.status == 200:
                 self.logger.error("Problems occured %s\n" % response.read())
+                self.logger.debug("Headers: '%s'\n" % headers)
+                self.logger.debug("Text: '%s'\n" % text)
             else:
                 self.logger.info("%d \n %s " % \
                                     (response.status,response.read()))
@@ -225,6 +231,13 @@ class Article(SGMLParser):
             self.is_empty = True
         else:
             self.is_empty = False            
+
+        # Did the write actually succeed?
+        if response.status == 302:
+            return True
+        else:
+            self.logger.debug("article.set: Returning false.\n")
+            return False
 
 
 if __name__ == "__main__":
