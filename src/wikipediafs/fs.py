@@ -110,8 +110,13 @@ class ArticleDir:
         return txt
 
     def write_to(self, path, txt):
-        art = self.get_art(path);
-        return art.set(txt)
+        art = self.get_art(path)
+        ret = art.set(txt)
+        if (ret == False):
+            self.set_cookie_string(1)
+            ret = art.set(txt)
+
+        return ret
 
     def size(self, path):
         LOGGER.debug("FSdir size %s" % (path))
