@@ -40,7 +40,7 @@ class User:
                  # Not actually needed, just here for compatibility
                  name=None,
                  cookie_str=None,
-                 dirname=None                 
+                 dirname=None
                  ):
 
         self.username = username
@@ -56,7 +56,7 @@ class User:
 
         # url pattern
         self.login_page = "%s?title=Special:Userlogin" % self.basename
-        self.login_page += "&action=submit&returnto=Special:Userlogin"
+        self.login_page += "&action=submit"
 
     def getCookieString(self):
         """
@@ -64,38 +64,77 @@ class User:
         It will then have to be passed to an Article.
         """
 
-        params = {"wpName":self.username, "wpPassword":self.password,
-                  "wpLoginattempt":"Identification", "wpRemember":"1"}
-
-        if self.domain:
-            params["wpDomain"] = self.domain
-                
-        params = urllib.urlencode(params)
-        
-        headers = {"Content-type": "application/x-www-form-urlencoded",
-                   "User-agent" : "WikipediaFS"}
-        
+        printlog(self.logger, "debug", "Logging in with username %s." % self.username)
+        self.logintoken = None
+        cookie_list = []
         conn = ExtendedHTTPConnection(self.host, self.port, self.https)
-        
+
         if self.httpauth_username and self.httpauth_password:
             conn.http_auth(self.httpauth_username, self.httpauth_password)
+
+        headers = {"Content-type": "application/x-www-form-urlencoded",
+                   "User-agent" : "WikipediaFS"}
+        conn.add_headers(headers)
+
+        # get login page body to receive logintoken and session cookie
+        conn.request(self.login_page)
+        response = conn.getresponse()
+
+        printlog(self.logger, "debug", "URL: %s, response status: %d, text: %s" % (self.login_page, response.status, response.read()))
+        while response.status == 301 or response.status == 302: # follow redirects; would be better to check for status 301 and 302
+            printlog(self.logger, "debug", "Redirecting to %s due to status of %d." % (response.getheader("Location"), response.status))
+            response.read()
+            conn.request(response.getheader("Location"))
+            response = conn.getresponse()
+            printlog(self.logger, "debug", "Redirected: Status %d." % (response.status))
+
+        match = re.search('wpLoginToken"\s*value="(\w*)"',
+                                response.read())
+        printlog(self.logger, "debug", "Token Match: %s." % (match))
+
+        if match:
+            self.logintoken = match.group(1)
+            printlog(self.logger, "debug", "Login Token: %s." % (self.logintoken))
+
+        # post login data and receive login cookies
+
+        # If we have a login token, then we also need to send the cookie from the initial connection.
+        # If we don't, then doing so breaks the login.
+
+        token_session = re.search('(.*?);', response.getheader("Set-Cookie")).group(1)
+        if self.logintoken:
+            headers["Cookie"] = token_session
+            cookie_list.append(token_session)
+
+        printlog(self.logger, "debug", "Headers:")
+        printlog(self.logger, "debug", headers)
+
+        params = {"wpName":self.username, "wpPassword":self.password,
+                  "wpRemember":"1", "wpLoginattempt":"Anmelden"}
+
+        if self.logintoken:
+            params["wpLoginToken"] = self.logintoken
+        if self.domain:
+            params["wpDomain"] = self.domain
+
+        params = urllib.urlencode(params)
 
         conn.add_data(params)
         conn.add_headers(headers)
         conn.request(self.login_page)
         response = conn.getresponse()
-        
-        cookie_list = []
+        printlog(self.logger, "debug", "URL: %s, response status: %d, text: %s" % (self.login_page, response.status, response.read()))
+
         in_cookie = re.compile(': (.*?);')
-        
+
         for cookie_value in response.msg.getallmatchingheaders("set-cookie"):
             it_matches = in_cookie.search(cookie_value)
-            
+
             if it_matches:
                 cookie_list.append(it_matches.group(1))
 
         conn.close()
-       
+
         printlog(self.logger, "debug", "cookie_list:")
         printlog(self.logger, "debug", cookie_list)
 
@@ -107,10 +146,10 @@ class User:
             return "; ".join(cookie_list)
         else:
             printlog(self.logger, "warning",
-                     "Could not log in with username %s" % self.username)
+                     "Could not log in with username %s: %s" % self.username)
             return None
 
-               
+
 if __name__ == "__main__":
     import sys
     import getpass
@@ -143,4 +182,4 @@ if __name__ == "__main__":
 
         user = User(sys.argv[3], password, **params)
         user.getCookieString()
-        
+
