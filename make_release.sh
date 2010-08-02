@@ -4,8 +4,14 @@ RM="`which rm` -vrf"
 MKDIR="`which mkdir` -p"
 
 if [ "$1foo" = "foo" ]; then
-        echo "usage: `basename $0` X.Y.Z"
+        echo "usage: `basename $0` X.Y.Z [username]"
         exit 1
+fi
+
+USER=mblondel
+
+if [ "$2foo" != "foo"]; then
+        USER=$2
 fi
 
 PKG="wikipediafs-$1"
@@ -28,7 +34,7 @@ gzip -9 doc/mount.wikipediafs.1
 echo "Uploading site..."
 cp README README.txt
 scp site/*.htm site/*.png doc/mount.wikipediafs.htm README.txt \
-mblondel@shell.sourceforge.net:/home/groups/w/wi/wikipediafs/htdocs/
+$USER@shell.sourceforge.net:/home/groups/w/wi/wikipediafs/htdocs/
 $RM README.txt
 
 echo "Removing unnecessary files..."
