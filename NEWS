@@ -1,3 +1,9 @@
+=== WikipediaFS 0.4 ===
+
+- Fixed support for MediaWiki 1.15.3 and later.
+- Much more robust against data loss due to various write failures.
+- Now reports all write failures to the application.
+
 === WikipediaFS 0.3 ===
 
 - Compatible with new fuse-python API

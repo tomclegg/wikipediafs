@@ -1,3 +1,26 @@
+=== WikipediaFS 0.4 ===
+
+2010-05-12 Zephaniah E. Loss-Cutler-Hull <mercury@users.sourceforge.net>
+
+- If a write attempt fails, try to log back in once and writing again,
+  instead of immediately failing.
+
+- Additional debugging under the debug log level.
+
+- Support for the new login controls for MediaWiki 1.15.3.
+
+2009-09-17 Zephaniah E. Loss-Cutler-Hull <mercury@users.sourceforge.net>
+
+- Added a "login-cache-time" option in the config file in order to
+  control how long we cache the login session.
+
+- Report mtime for stats of files.
+
+- Report back to the application when a write fails, to prevent data
+  loss.
+
+- Quite a bit of additional debug logging, if you turn debug logging on.
+
 2009-03-27 Mathieu Blondel <mblondel@users.sourceforge.net>
 
 - Made logging more flexible (user.py).
