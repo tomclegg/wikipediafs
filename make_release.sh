@@ -8,11 +8,12 @@ if [ "$1foo" = "foo" ]; then
         exit 1
 fi
 
-USER=mblondel
-
-if [ "$2foo" != "foo"]; then
-        USER=$2
+if [ "$2foo" = "foo" ]; then
+        echo "usage: `basename $0` X.Y.Z <username>"
+	exit 1
 fi
+
+USER=$2
 
 PKG="wikipediafs-$1"
 TAR_PKG="$PKG.tar.gz"
