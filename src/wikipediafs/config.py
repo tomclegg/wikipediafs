@@ -53,6 +53,7 @@ class Config:
             <https />
             <httpauth_username>Username</httpauth_username>
             <httpauth_password>Password</httpauth_password>
+            <cookie_str>cookie_name=cookie_value</cookie_str>
             <domain>DOMAIN (if using LDAP/AD Authentication extension)</domain>
         </site>
         -->        
@@ -111,7 +112,7 @@ class Config:
              dic = {}
              for ele in ("dirname", "host", "basename", "username",
              "password", "https", "port", "domain", "httpauth_username",
-             "httpauth_password"):
+             "httpauth_password", "cookie_str"):
                 node = site.getElementsByTagName(ele)
                 if node.length == 1:
                     if node[0].firstChild:
